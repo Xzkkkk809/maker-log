@@ -1,0 +1,187 @@
+#include <WiFi.h>
+
+const char *ssid = "Xu";
+const char *password = "070617xx";
+
+WiFiServer server(80);
+
+// --- 引脚定义 ---
+#define SERVO_PIN 5
+#define LED_PIN   2  // 这里设置LED连接的GPIO引脚 (ESP32-S2 Mini 可用 GPIO2)
+
+// --- 舵机配置 ---
+#define LEDC_TIMER_12_BIT  12
+#define LEDC_BASE_FREQ     50
+
+// --- 舵机状态变量 ---
+bool isAutoSwing = false;
+int currentAngle = 90;
+int swingDirection = 1;
+unsigned long previousServoMillis = 0;
+const long servoInterval = 20;
+
+// --- LED 状态变量 ---
+bool ledState = LOW;
+bool manualLedOn = false;      // 手动模式下LED是否开启
+unsigned long previousLedMillis = 0;
+const long ledBlinkInterval = 500; // LED闪烁速度 (500ms)
+
+// --- 舵机控制函数 ---
+void setServoAngle(int angle) {
+  angle = constrain(angle, 0, 180);
+  float pulseWidth = 0.5 + ((float)angle / 180.0) * 2.0;
+  int duty = (int)(4095.0 * pulseWidth / 20.0);
+  ledcWrite(SERVO_PIN, duty);
+}
+
+// --- 舵机自动扫摆逻辑 ---
+void processAutoSwing() {
+  if (!isAutoSwing) return;
+
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousServoMillis >= servoInterval) {
+    previousServoMillis = currentMillis;
+
+    currentAngle += swingDirection;
+    if (currentAngle >= 180) {
+      currentAngle = 180;
+      swingDirection = -1;
+    } else if (currentAngle <= 0) {
+      currentAngle = 0;
+      swingDirection = 1;
+    }
+    setServoAngle(currentAngle);
+  }
+}
+
+// --- LED 控制逻辑 (核心新增部分) ---
+void processLED() {
+  unsigned long currentMillis = millis();
+
+  if (isAutoSwing) {
+    // 模式1：舵机在自动转动 -> LED强制闪烁
+    if (currentMillis - previousLedMillis >= ledBlinkInterval) {
+      previousLedMillis = currentMillis;
+      ledState = !ledState; // 翻转状态
+      digitalWrite(LED_PIN, ledState);
+    }
+  } else {
+    // 模式2：舵机静止 -> 手动控制LED
+    // 确保LED停止闪烁，保持固定状态
+    if (manualLedOn) {
+      digitalWrite(LED_PIN, HIGH);
+    } else {
+      digitalWrite(LED_PIN, LOW);
+    }
+  }
+}
+void setup() {
+  Serial.begin(115200);
+  
+  // 初始化舵机
+  ledcAttach(SERVO_PIN, LEDC_BASE_FREQ, LEDC_TIMER_12_BIT);
+  setServoAngle(90);
+  
+  // 初始化LED
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+
+  // 连接WiFi
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("WiFi connected.");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  server.begin();
+}
+
+void loop() {
+  WiFiClient client = server.accept();
+
+  if (client) {
+    Serial.println("New Client.");
+    String currentLine = "";
+    while (client.connected()) {
+      if (client.available()) {
+        char c = client.read();
+        Serial.write(c);
+        if (c == '\n') {
+          if (currentLine.length() == 0) {
+            // 发送HTTP响应
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:text/html");
+            client.println();
+
+            // --- 网页内容 (新增LED控制区) ---
+            client.print("<h1>ESP32 Servo & LED Control</h1>");
+            
+            client.print("<h3>Servo Control:</h3>");
+            client.print("<p><a href=\"/0\">Go to 0 degrees</a></p>");
+            client.print("<p><a href=\"/90\">Go to 90 degrees</a></p>");
+            client.print("<p><a href=\"/180\">Go to 180 degrees</a></p>");
+            client.print("<p><a href=\"/auto\">Start Auto Swing (LED blinks)</a></p>");
+            client.print("<p><a href=\"/stop\">Stop & Reset</a></p>");
+            
+            client.print("<hr>");
+            
+            client.print("<h3>Manual LED Control (Only when stopped):</h3>");
+            client.print("<p><a href=\"/ledOn\">Turn LED ON</a></p>");
+            client.print("<p><a href=\"/ledOff\">Turn LED OFF</a></p>");
+
+            client.println();
+            break;
+          } else {
+            currentLine = "";
+          }
+        } else if (c != '\r') {
+          currentLine += c;
+        }
+
+        // --- 命令解析 ---
+        if (currentLine.endsWith("GET /0")) {
+          isAutoSwing = false;
+          setServoAngle(0);
+        }
+        if (currentLine.endsWith("GET /90")) {
+          isAutoSwing = false;
+          setServoAngle(90);
+        }
+        if (currentLine.endsWith("GET /180")) {
+          isAutoSwing = false;
+          setServoAngle(180);
+        }
+        if (currentLine.endsWith("GET /auto")) {
+          isAutoSwing = true;
+          currentAngle = 0;
+          swingDirection = 1;
+        }
+        if (currentLine.endsWith("GET /stop")) {
+          isAutoSwing = false;
+          setServoAngle(90);
+        }
+        
+        // --- 新增：LED 控制命令 ---
+        if (currentLine.endsWith("GET /ledOn")) {
+          manualLedOn = true;
+        }
+        if (currentLine.endsWith("GET /ledOff")) {
+          manualLedOn = false;
+        }
+      }
+    }
+    client.stop();
+    Serial.println("Client Disconnected.");
+  }
+
+  // --- 后台循环任务 ---
+  processAutoSwing(); // 处理舵机
+  processLED();       // 处理LED (必须放在 loop 最后)
+}
