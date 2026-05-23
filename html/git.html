@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git 学习与实践 - 创客实践日志</title>
+    <style>
+        /* 全局变量与样式重置 - 与其他页面完全统一 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --primary-hover: #0E42C7;
+            --bg-light: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D2129;
+            --text-secondary: #4E5969;
+            --text-light: #86909C;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
+            line-height: 1.7;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部固定导航条 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            background: #E5E6EB;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+
+        /* 页面主体容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero区域 - 大标题 */
+        .hero {
+            margin-top: 50px;
+            margin-bottom: 40px;
+            text-align: center;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, #4080FF 100%);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 32px;
+            margin-bottom: 28px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card h2 {
+            font-size: 22px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin: 20px 0 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-indent: 2em;
+        }
+
+        .card ul {
+            margin-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 10px;
+        }
+
+        .card li strong {
+            color: var(--text-main);
+        }
+
+        /* 代码块样式 */
+        pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: "Consolas", "Monaco", monospace;
+            background: #F2F3F5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #D93026;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 仓库链接样式 */
+        .repo-link-box {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .repo-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .repo-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #E8F3FF;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tip-box p {
+            margin: 0;
+            text-indent: 0;
+            color: var(--text-secondary);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-light);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E6EB;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .hero {
+                margin-top: 30px;
+                padding: 40px 24px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航条 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-btn-group">
+                <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+            </div>
+            <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="nav-btn btn-primary">
+                📂 Gitee仓库直达
+            </a>
+        </div>
+    </nav>
+
+    <!-- 页面主体 -->
+    <div class="container">
+        <!-- Hero区域 - 大标题 -->
+        <div class="hero">
+            <h1>Git 学习与实践</h1>
+            <p>版本控制，云端备份，项目管理的核心工具</p>
+        </div>
+
+        <!-- 一、Git 简介卡片 -->
+        <div class="card">
+            <h2>一、什么是 Git</h2>
+            <p>
+                Git 是目前世界上最先进、最流行的<strong>分布式版本控制系统</strong>，由 Linux 之父 Linus Torvalds 为管理 Linux 内核开发而创建。
+                简单来说，Git 可以帮你记录文件的每一次修改历史，方便回溯旧版本、对比差异，同时支持多人协作开发，是程序员与创客必备的工具。
+            </p>
+            <p>
+                对于创客项目而言，Git 可以管理代码、设计图纸、文档日志等所有文件，让你不用担心“修改坏了无法还原”，也能清晰看到项目的成长轨迹。
+            </p>
+        </div>
+
+        <!-- 二、核心概念卡片 -->
+        <div class="card">
+            <h2>二、Git 核心概念</h2>
+            <ul>
+                <li><strong>仓库（Repository）</strong>：存放项目所有文件和修改历史的地方，分为本地仓库（你电脑上的文件夹）和远程仓库（如 Gitee/GitHub 上的托管仓库）。</li>
+                <li><strong>提交（Commit）</strong>：将文件的修改保存到本地仓库的操作，每一次提交都会生成一个唯一的 ID（哈希值），相当于给项目拍了一张“快照”。</li>
+                <li><strong>分支（Branch）</strong>：从主线上分离出来的独立开发线，可以在不影响主线（main/master）的情况下开发新功能，完成后再合并回去。</li>
+                <li><strong>远程仓库（Remote）</strong>：托管在网络服务器上的仓库，用于备份代码和多人协作，本课程使用 Gitee 作为远程仓库平台。</li>
+            </ul>
+        </div>
+
+        <!-- 三、我的 Git 仓库卡片 -->
+        <div class="card">
+            <h2>三、我的课程 Git 仓库</h2>
+            <p>
+                本课程的所有作业、代码、日志都已托管在 Gitee 上，仓库地址如下：
+            </p>
+            <div class="repo-link-box">
+                <a href="https://gitee.com/xzk-creator/xxxxxxzzk" class="repo-link" target="_blank">
+                    https://gitee.com/xzk-creator/xxxxxxzzk
+                </a>
+            </div>
+            
+            <h3>仓库结构说明</h3>
+            <p>
+                仓库采用「总仓库 + 分项目文件夹」的架构，方便管理和检索：
+            </p>
+            <ul>
+                <li><strong>根目录</strong>：总仓库 README.md，作为所有作业的检索入口；</li>
+                <li><strong>项目文件夹</strong>：按 <code>周数+作业名称</code> 命名（如 <code>week6-LED&sg90</code>），实现物理隔离；</li>
+                <li><strong>项目内固定结构</strong>：
+                    <ul>
+                        <li><code>code/</code>：存放项目完整可编译代码；</li>
+                        <li><code>doc/</code>：存放项目详细实现日志、硬件接线图、问题解决记录；</li>
+                        <li><code>README.md</code>：项目快速说明，包含硬件清单、核心功能、接线方式。</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 四、Git 基础操作流程卡片 -->
+        <div class="card">
+            <h2>四、Git 基础操作流程（结合本仓库）</h2>
+            
+            <h3>1. 克隆远程仓库到本地</h3>
+            <p>
+                首次使用时，需要将 Gitee 上的远程仓库克隆到你的电脑上：
+            </p>
+            <pre><code>git clone https://gitee.com/xzk-creator/xxxxxxzzk.git</code></pre>
+
+            <h3>2. 配置用户信息（首次使用必做）</h3>
+            <p>
+                配置你的用户名和邮箱，用于标识提交者：
+            </p>
+            <pre><code>git config --global user.name "xzk-creator"
+git config --global user.email "你的邮箱@example.com"</code></pre>
+
+            <h3>3. 日常更新与提交流程</h3>
+            <p>
+                每次完成作业或修改文件后，按照以下步骤将代码同步到远程仓库：
+            </p>
+            <pre><code># 1. 查看当前文件状态
+git status
+
+# 2. 添加所有修改过的文件到暂存区（或者指定文件名）
+git add .
+
+# 3. 提交到本地仓库，写清楚提交信息
+git commit -m "提交说明：例如完成 week6 LED与SG90舵机控制"
+
+# 4. 推送到 Gitee 远程仓库
+git push</code></pre>
+
+            <div class="tip-box">
+                <p><strong>💡 提示：</strong> 建议养成“小步提交”的习惯，每完成一个小功能就提交一次，方便后续回溯和定位问题。</p>
+            </div>
+
+            <h3>4. 拉取远程更新</h3>
+            <p>
+                如果在多台电脑上工作，或者远程仓库有更新，先拉取再修改：
+            </p>
+            <pre><code>git pull</code></pre>
+        </div>
+
+        <!-- 五、Git 在创客项目中的价值卡片 -->
+        <div class="card">
+            <h2>五、Git 在创客项目中的价值</h2>
+            <ul>
+                <li><strong>版本回溯</strong>：不用担心改坏代码，随时可以回退到任意一个历史提交版本；</li>
+                <li><strong>过程记录</strong>：完整的提交日志就是你的项目成长日记，清晰看到从想法到实现的全过程；</li>
+                <li><strong>云端备份</strong>：推送到 Gitee 后，代码和文档有了云端备份，不怕电脑故障丢失文件；</li>
+                <li><strong>团队协作</strong>：如果是团队项目，Git 的分支管理和合并功能可以高效支持多人协作开发。</li>
+            </ul>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>© 2026 创客实践日志 | Git 学习与实践 | 内容持续更新中</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>嵌入式计算 - 创客实践日志</title>
+    <style>
+        /* 全局样式与之前页面完全统一，保证站点风格一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --primary-hover: #0E42C7;
+            --success: #00B42A;
+            --success-hover: #009E24;
+            --bg-light: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D2129;
+            --text-secondary: #4E5969;
+            --text-light: #86909C;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
+            line-height: 1.7;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部固定导航 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            background: #E5E6EB;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: var(--success-hover);
+            box-shadow: 0 4px 12px rgba(0, 180, 42, 0.3);
+        }
+
+        /* 页面主体容器 */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+        }
+
+        /* 头部标题区 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 36px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--primary), #4080FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-section p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin: 20px 0 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .card ul, .card ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 8px;
+        }
+
+        /* 代码块样式 */
+        pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: "Consolas", "Monaco", monospace;
+            background: #F2F3F5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #D93026;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        /* 硬件参数表格 */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .spec-table thead {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        .spec-table th, .spec-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .spec-table tbody tr:hover {
+            background-color: var(--bg-light);
+        }
+
+        /* 图片展示网格 */
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .img-box {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-light);
+            transition: var(--transition);
+        }
+
+        .img-box:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .img-desc {
+            padding: 12px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 下载区样式 */
+        .download-top {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .download-big-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .download-category {
+            margin-bottom: 24px;
+        }
+
+        .download-category h4 {
+            font-size: 17px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E5E6EB;
+        }
+
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .file-item:hover {
+            background: #E8F3FF;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        .file-desc {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .file-download-btn {
+            padding: 6px 16px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .file-download-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #E8F3FF;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tip-box p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-light);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E6EB;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 28px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-container {
+                justify-content: center;
+            }
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .file-download-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+            <div class="nav-btn-group">
+                <a href="./embed-files/嵌入式代码整包.zip" class="nav-btn btn-success" download>📦 代码文件整包下载</a>
+                <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="nav-btn btn-primary">📂 Gitee仓库直达</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面主体 -->
+    <div class="container">
+        <!-- 头部标题 -->
+        <div class="header-section">
+            <h1>嵌入式计算实践</h1>
+            <p>基于Arduino框架与ESP32 S2 Mini开发板的嵌入式开发全记录，包含环境搭建、基础代码与课程项目实践</p>
+        </div>
+
+        <!-- 一、硬件介绍卡片 -->
+        <div class="card">
+            <h2>核心硬件：ESP32 S2 Mini</h2>
+            <p>
+                本次课程使用的开发板为 <strong>ESP32 S2 Mini</strong>，这是一款基于ESP32-S2芯片的迷你型开发板，体积小巧、功能强大，非常适合物联网与嵌入式项目开发。
+            </p>
+            
+            <h3>核心参数</h3>
+            <table class="spec-table">
+                <thead>
+                    <tr>
+                        <th>参数项</th>
+                        <th>具体规格</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>主控芯片</td>
+                        <td>ESP32-S2FN4R2 (单核32-bit Xtensa LX7，主频240MHz)</td>
+                    </tr>
+                    <tr>
+                        <td>内存</td>
+                        <td>320KB SRAM，4MB Flash，2MB PSRAM</td>
+                    </tr>
+                    <tr>
+                        <td>无线功能</td>
+                        <td>Wi-Fi 2.4 GHz (802.11 b/g/n)</td>
+                    </tr>
+                    <tr>
+                        <td>IO引脚</td>
+                        <td>27个可编程GPIO引脚，支持ADC/DAC/I2C/SPI/UART</td>
+                    </tr>
+                    <tr>
+                        <td>USB接口</td>
+                        <td>Native USB OTG，支持USB CDC串口通信与程序烧录</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>开发板展示</h3>
+            <div class="img-grid">
+                <div class="img-box">
+                    <img src="" alt="ESP32 S2 Mini正面实拍">
+                    <div class="img-desc">ESP32 S2 Mini 正面实拍图</div>
+                </div>
+                <div class="img-box">
+                    <img src="" alt="ESP32 S2 Mini引脚图">
+                    <div class="img-desc">ESP32 S2 Mini 引脚定义图</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 二、开发环境搭建卡片 -->
+        <div class="card">
+            <h2>开发环境搭建</h2>
+            <p>课程使用 <strong>Arduino IDE</strong> 作为开发环境，通过Arduino框架进行ESP32 S2 Mini的程序开发，环境搭建步骤如下：</p>
+            
+            <ol>
+                <li><strong>安装Arduino IDE</strong>：从Arduino官网下载最新版Arduino IDE并完成安装。</li>
+                <li><strong>添加ESP32开发板包</strong>：
+                    <ul>
+                        <li>打开Arduino IDE，进入「文件」→「首选项」；</li>
+                        <li>在「附加开发板管理器网址」中添加：<code>https://dl.espressif.com/dl/package_esp32_index.json</code>；</li>
+                        <li>点击「确定」保存设置。</li>
+                    </ul>
+                </li>
+                <li><strong>安装ESP32开发板</strong>：
+                    <ul>
+                        <li>进入「工具」→「开发板」→「开发板管理器」；</li>
+                        <li>搜索「esp32」，安装由Espressif Systems提供的「esp32」开发板包；</li>
+                        <li>等待安装完成。</li>
+                    </ul>
+                </li>
+                <li><strong>选择开发板型号</strong>：
+                    <ul>
+                        <li>进入「工具」→「开发板」→「ESP32 Arduino」；</li>
+                        <li>选择「LOLIN S2 Mini」（或「ESP32S2 Dev Module」，根据实际情况选择）。</li>
+                    </ul>
+                </li>
+                <li><strong>选择串口</strong>：
+                    <ul>
+                        <li>用USB线连接ESP32 S2 Mini与电脑；</li>
+                        <li>进入「工具」→「端口」，选择对应的COM口（Windows）或/dev/tty.usbmodem*（Mac）。</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <div class="tip-box">
+                <p>💡 提示：如果电脑无法识别开发板，需检查USB线是否为数据线（仅充电线无法通信），并安装CP210x或CH340串口驱动（根据开发板的USB转串口芯片选择）。</p>
+            </div>
+        </div>
+
+        <!-- 三、基础代码示例卡片 -->
+        <div class="card">
+            <h2>基础代码示例：LED闪烁</h2>
+            <p>这是ESP32 S2 Mini的经典入门代码，控制板载LED（或外接LED）周期性闪烁，理解GPIO输出的基本使用方法。</p>
+            
+            <h3>硬件接线</h3>
+            <ul>
+                <li>如果使用板载LED：无需额外接线，直接使用板载LED对应的引脚（通常为GPIO15或IO15，具体查看开发板引脚图）；</li>
+                <li>如果使用外接LED：LED正极串联220Ω电阻后连接到GPIO15，LED负极连接到GND。</li>
+            </ul>
+
+            <h3>完整代码</h3>
+            <pre><code>// 定义LED引脚
+const int ledPin = 15; 
+
+// setup()函数仅在启动时运行一次
+void setup() {
+  // 初始化串口通信，波特率115200
+  Serial.begin(115200);
+  // 等待串口连接（可选，用于USB CDC串口）
+  while (!Serial) {
+    delay(10);
+  }
+  
+  // 将LED引脚设置为输出模式
+  pinMode(ledPin, OUTPUT);
+  
+  Serial.println("ESP32 S2 Mini LED闪烁程序已启动！");
+}
+
+// loop()函数会循环反复运行
+void loop() {
+  digitalWrite(ledPin, HIGH);   // 点亮LED（输出高电平）
+  Serial.println("LED 已点亮");
+  delay(1000);                   // 延时1000毫秒（1秒）
+  
+  digitalWrite(ledPin, LOW);    // 熄灭LED（输出低电平）
+  Serial.println("LED 已熄灭");
+  delay(1000);                   // 再延时1秒
+}</code></pre>
+
+            <h3>代码上传与运行</h3>
+            <ol>
+                <li>将代码复制到Arduino IDE中；</li>
+                <li>点击工具栏的「验证」按钮（✓），检查代码是否有语法错误；</li>
+                <li>验证通过后，点击「上传」按钮（→），等待程序编译并上传到开发板；</li>
+                <li>上传成功后，打开「串口监视器」（右上角的放大镜图标），设置波特率为115200，即可看到程序运行日志，同时LED开始闪烁。</li>
+            </ol>
+        </div>
+
+        <!-- 四、课程实践项目卡片 -->
+        <div class="card">
+            <h2>课程实践项目</h2>
+            
+            <h3>项目1：LED与SG90舵机控制（Week6）</h3>
+            <p>结合你的Gitee仓库中的<code>week6-LED&sg90</code>项目，实现LED亮度控制与SG90舵机角度控制的综合应用。</p>
+            
+            <div class="img-grid">
+                <div class="img-box">
+                    <img src="" alt="项目硬件接线图">
+                    <div class="img-desc">项目硬件接线实拍图</div>
+                </div>
+                <div class="img-box">
+                    <img src="" alt="项目成品展示">
+                    <div class="img-desc">项目成品运行展示图</div>
+                </div>
+            </div>
+
+            <p><strong>项目功能说明：</strong></p>
+            <ul>
+                <li>通过PWM控制LED的亮度变化（呼吸灯效果）；</li>
+                <li>通过PWM控制SG90舵机在0°-180°之间来回转动；</li>
+                <li>通过串口监视器输出当前状态与参数。</li>
+            </ul>
+        </div>
+
+        <!-- 五、文件下载区 -->
+        <div class="card">
+            <h2>代码与资源下载区</h2>
+            <p>所有项目代码、接线图、文档均可按需下载，后续新增项目仅需复制对应代码块即可。</p>
+            
+            <div class="download-top">
+                <a href="./embed-files/嵌入式代码整包.zip" class="download-big-btn btn-success" download>
+                    📦 全部代码文件整包下载
+                </a>
+                <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="download-big-btn btn-primary">
+                    📂 Gitee仓库下载全部资源
+                </a>
+            </div>
+
+            <!-- 分类1：基础示例代码 -->
+            <div class="download-category">
+                <h4>1. 基础示例代码</h4>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div class="file-info">
+                            <span class="file-name">01-LED-Blink.ino</span>
+                            <span class="file-desc">LED闪烁基础示例代码</span>
+                        </div>
+                        <a href="./embed-files/01-LED-Blink.ino" class="file-download-btn" download>下载</a>
+                    </div>
+                    <!-- 后续加文件，复制上面的file-item块即可 -->
+                </div>
+            </div>
+
+            <!-- 分类2：课程项目代码 -->
+            <div class="download-category">
+                <h4>2. 课程项目代码</h4>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div class="file-info">
+                            <span class="file-name">week6-LED&sg90.ino</span>
+                            <span class="file-desc">Week6 LED与SG90舵机控制项目代码</span>
+                        </div>
+                        <a href="./embed-files/week6-LED&sg90.ino" class="file-download-btn" download>下载</a>
+                    </div>
+                    <!-- 后续加项目，复制上面的file-item块即可 -->
+                </div>
+            </div>
+
+            <!-- 分类3：硬件接线图与文档 -->
+            <div class="download-category">
+                <h4>3. 硬件接线图与文档</h4>
+                <div class="file-list">
+                    <div class="file-item">
+                        <div class="file-info">
+                            <span class="file-name">ESP32-S2-Mini-引脚图.pdf</span>
+                            <span class="file-desc">ESP32 S2 Mini 官方引脚定义图</span>
+                        </div>
+                        <a href="./embed-files/ESP32-S2-Mini-引脚图.pdf" class="file-download-btn" download>下载</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 六、实践心得卡片 -->
+        <div class="card">
+            <h2>实践心得与注意事项</h2>
+            <ul>
+                <li><strong>供电注意</strong>：ESP32 S2 Mini可通过USB供电，但若外接舵机、电机等大电流负载，需使用外部独立电源为负载供电，避免开发板供电不足导致重启或损坏。</li>
+                <li><strong>引脚选择</strong>：部分GPIO引脚有特殊功能（如 strapping pins），使用前需查阅官方引脚图，避免使用启动时的特殊引脚，防止程序无法正常启动。</li>
+                <li><strong>串口调试</strong>：善用串口监视器（<code>Serial.print()</code>）输出调试信息，这是排查代码问题最有效的方法；注意串口监视器的波特率需与代码中<code>Serial.begin()</code>设置的一致。</li>
+                <li><strong>代码备份</strong>：养成使用Git管理代码的习惯，每完成一个功能就提交一次，方便版本回溯与代码管理，同时同步到Gitee仓库进行云端备份。</li>
+            </ul>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            创客实践日志 | 嵌入式计算部分 | 内容持续更新中
+        </footer>
+    </div>
+</body>
+</html>
