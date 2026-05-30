@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>期末创新项目 - 自动提醒喝水装置 | 创客实践日志</title>
+    <style>
+        /* 全局重置与基础配置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --primary-hover: #0E42C7;
+            --bg-light: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D2129;
+            --text-secondary: #4E5969;
+            --text-light: #86909C;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
+            line-height: 1.7;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部固定导航栏 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            background: #E5E6EB;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+
+        /* 页面主体容器 */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+        }
+
+        /* 头部标题区 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 36px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--primary), #4080FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-section p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin: 20px 0 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .card ul, .card ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 8px;
+        }
+
+        /* 图片展示网格 */
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .img-box {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-light);
+            transition: var(--transition);
+        }
+
+        .img-box:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .img-desc {
+            padding: 12px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 成员信息栏 */
+        .member-box {
+            background: #f8f9fa;
+            border: 1px dashed #c0c4cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 80px;
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #E8F3FF;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        /* 仓库地址栏 */
+        .repo-box {
+            background: #f0f7ff;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 15px 0;
+        }
+
+        .repo-box a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .repo-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-light);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E6EB;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 28px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+            <div class="nav-btn-group">
+                <a href="https://gitee.com/xxx/xxxx" target="_blank" class="nav-btn btn-primary">📂 Gitee仓库直达</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面主体 -->
+    <div class="container">
+        <!-- 头部标题 -->
+        <div class="header-section">
+            <h1>期末创新项目 — 自动提醒喝水装置</h1>
+            <p>小组综合创新实践项目，智能感应水杯状态，实现灯光提醒功能</p>
+        </div>
+
+        <!-- 一、小组成员信息 -->
+        <div class="card">
+            <h2>小组成员信息</h2>
+            <p>本项目由以下成员分工合作完成：</p>
+            <div class="member-box">
+                叶锦轩 2025112340
+		朱梓轩 2025112332
+		黄上校 2025112326
+		徐志康 2025112328
+            </div>
+        </div>
+
+        <!-- 二、项目简介 -->
+        <div class="card">
+            <h2>项目简介</h2>
+            <p>
+                本次期末创新项目为<strong>自动提醒喝水装置</strong>。将水杯放置在装置板面时，板面受重力下压，触发底板上的按键开关，设备启动，绿色指示灯亮起；若水杯长时间放置、按键持续被按压，代表长时间未饮水，装置自动切换为红色指示灯，起到喝水提醒作用。
+            </p>
+            <p>
+                产品结构简单实用，结合机械结构、电路控制与程序逻辑设计，兼顾日常使用与健康提醒需求，是一款贴近生活的创意智能小装置。
+            </p>
+        </div>
+
+        <!-- 三、工作原理 -->
+        <div class="card">
+            <h2>装置工作原理</h2>
+            <ol>
+                <li>水杯放入装置，依靠自身重量下压板面，按下底部按键开关；</li>
+                <li>按键触发后，电路接通，设备进入工作状态，<strong>绿灯常亮</strong>，表示水杯在位；</li>
+                <li>程序开始计时，当按键被长时间持续按压时，判定为长时间未饮水；</li>
+                <li>系统切换输出信号，<strong>红灯亮起</strong>，完成饮水提醒；</li>
+                <li>取走水杯后按键复位，装置恢复初始待机状态。</li>
+            </ol>
+        </div>
+
+        <!-- 四、产品展示 -->
+        <div class="card">
+            <h2>产品实物与过程展示</h2>
+            <p>包含结构建模、硬件组装、功能测试、成品整体效果等照片：</p>
+            <div class="img-grid">
+                <div class="img-box">
+                    <img src="images/期末3D.jpg" alt="结构图">
+                    <div class="img-desc">装置三维建模成品</div>
+                </div>
+                <div class="img-box">
+                    <img src="images/期末组装图.jpg" alt="硬件电路组装">
+                    <div class="img-desc">电路与硬件组装过程</div>
+                </div>
+                <div class="img-box">
+                    <img src="images/绿灯.jpg" alt="绿灯正常状态">
+                    <div class="img-desc">水杯在位，绿灯亮起状态</div>
+                </div>
+                <div class="img-box">
+                    <img src="images/红灯.jpg" alt="红灯提醒状态">
+                    <div class="img-desc">超时未饮水，红灯提醒状态</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 五、开发说明 & 仓库地址 -->
+        <div class="card">
+            <h2>开发资料说明</h2>
+            <p>本项目所有控制代码、三维建模文件均统一存放至Gitee代码仓库，可点击链接查看与下载。</p>
+            <div class="repo-box">
+                <strong>Gitee 仓库地址：</strong>
+                <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank">https://gitee.com/xzk-creator/xxxxxxzzk</a>
+            </div>
+        </div>
+
+        <!-- 六、制作流程 -->
+        <div class="card">
+            <h2>整体制作流程</h2>
+            <ol>
+                <li>小组讨论确定方案，完成结构设计与三维建模；</li>
+                <li>根据功能需求编写控制程序，调试灯光、计时逻辑；</li>
+                <li>完成面包板、按键、指示灯等硬件电路接线与组装；</li>
+                <li>装配机械承载板面，测试下压触发效果；</li>
+                <li>整体联调，优化计时时长与灯光切换逻辑；</li>
+                <li>反复实测功能，完成最终成品。</li>
+            </ol>
+        </div>
+
+        <!-- 七、项目总结 -->
+        <div class="card">
+            <h2>项目总结与体会</h2>
+            <p>
+                本次期末自动提醒喝水装置项目，综合运用了结构建模、电路搭建、程序编写、硬件调试等多方面知识。小组各司其职、配合协作，从创意构思一步步落地为可正常使用的实物作品。
+            </p>
+            <p>
+                制作过程中，我们针对按键触发灵敏度、计时逻辑、灯光切换等问题不断调试优化，提升了综合动手能力与问题解决能力。本次实训完整走完创意项目全流程，收获颇丰。
+            </p>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            创客实践日志 | 期末创新项目 - 自动提醒喝水装置
+        </footer>
+    </div>
+</body>
+</html>

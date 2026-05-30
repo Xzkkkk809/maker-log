@@ -436,8 +436,6 @@
         <div class="nav-container">
             <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
             <div class="nav-btn-group">
-                <!-- 【专属模型整包下载链接】修改href为你的zip包地址即可 -->
-                <a href="./3d-files/3D模型整包.zip" class="nav-btn btn-success" download>📦 模型文件整包下载</a>
                 <!-- 【Gitee仓库专属下载链接】直接跳你的仓库文件页 -->
                 <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="nav-btn btn-primary">📂 Gitee仓库直达</a>
             </div>
@@ -469,19 +467,19 @@
             <div class="img-grid">
                 <div class="img-box">
                     <!-- 替换src为你的图片路径 -->
-                    <img src="" alt="SolidWorks建模界面">
+                    <img src="images/solidworks .jpg" alt="SolidWorks建模界面">
                     <div class="img-desc">SolidWorks零件建模界面</div>
                 </div>
                 <div class="img-box">
-                    <img src="" alt="装配体设计界面">
+                    <img src="images/装配体.png" alt="装配体设计界面">
                     <div class="img-desc">整体装配体设计界面</div>
                 </div>
                 <div class="img-box">
-                    <img src="" alt="3D打印成品实拍">
+                    <img src="images/成品实拍.jpg" alt="3D打印成品实拍">
                     <div class="img-desc">3D打印成品正面实拍</div>
                 </div>
                 <div class="img-box">
-                    <img src="" alt="成品装配效果图">
+                    <img src="images/效果图.jpg" alt="成品装配效果图">
                     <div class="img-desc">成品装配/使用效果图</div>
                 </div>
             </div>
@@ -490,163 +488,7 @@
             </div>
         </div>
 
-        <!-- 三、3D模型在线预览卡片 -->
-        <div class="card">
-            <h2>3D模型在线预览</h2>
-            <p>支持360°旋转、缩放、平移查看模型细节，鼠标拖动可旋转，滚轮可缩放，右键可平移</p>
-            <!-- 替换src为你的STL/3MF文件路径，无需转换直接支持 -->
-            <div class="model-viewer-box">
-                <model-viewer 
-                    src="./3d-files/底座(1).stl" 
-                    alt="3D模型预览" 
-                    camera-controls 
-                    auto-rotate 
-                    shadow-intensity="1"
-                    exposure="1.5"
-                    ar>
-                </model-viewer>
-            </div>
-        </div>
-
-        <!-- 四、模型文件下载区【核心高扩展区，新增项目复制details代码块即可】 -->
-        <div class="card">
-            <h2>模型文件下载区</h2>
-            <p>所有设计文件均可按需下载，后续新增项目仅需复制下方项目板块代码块，即可快速新增可展开的下载分类</p>
-            
-            <!-- 顶部大按钮下载区 -->
-            <div class="download-top">
-                <a href="./3d-files/3D模型整包.zip" class="download-big-btn btn-success" download>
-                    📦 全部模型文件整包下载
-                </a>
-                <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="download-big-btn btn-primary">
-                    📂 Gitee仓库下载全部文件
-                </a>
-            </div>
-
-            <!-- 项目分板块可展开下载区 -->
-            <div class="project-download-section">
-                <h3 style="margin-bottom: 20px; color: var(--text-main);">📁 项目子文件分卷下载</h3>
-
-                <!-- 项目1：【复制此details块即可新增项目】 -->
-                <details>
-                    <summary>项目一：多功能收纳装置</summary>
-                    <div class="details-content">
-                        <div class="file-list">
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">收纳盒主体.SLDPRT</span>
-                                    <span class="file-desc">SolidWorks可编辑源文件</span>
-                                </div>
-                                <a href="./3d-files/收纳盒主体.SLDPRT" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">收纳盒上盖.SLDPRT</span>
-                                    <span class="file-desc">SolidWorks可编辑源文件</span>
-                                </div>
-                                <a href="./3d-files/收纳盒上盖.SLDPRT" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">收纳盒装配体.SLDASM</span>
-                                    <span class="file-desc">整体装配体约束文件</span>
-                                </div>
-                                <a href="./3d-files/收纳盒装配体.SLDASM" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">收纳盒主体.stl</span>
-                                    <span class="file-desc">3D打印专用切片文件</span>
-                                </div>
-                                <a href="./3d-files/收纳盒主体.stl" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">收纳盒全套.step</span>
-                                    <span class="file-desc">跨软件通用交换格式</span>
-                                </div>
-                                <a href="./3d-files/收纳盒全套.step" class="file-download-btn" download>下载</a>
-                            </div>
-                        </div>
-                    </div>
-                </details>
-
-                <!-- 项目2：【复制此details块即可新增项目】 -->
-                <details>
-                    <summary>项目二：舵机云台结构</summary>
-                    <div class="details-content">
-                        <div class="file-list">
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">云台底座.SLDPRT</span>
-                                    <span class="file-desc">SolidWorks可编辑源文件</span>
-                                </div>
-                                <a href="./3d-files/云台底座.SLDPRT" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">云台支架.SLDPRT</span>
-                                    <span class="file-desc">SolidWorks可编辑源文件</span>
-                                </div>
-                                <a href="./3d-files/云台支架.SLDPRT" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">SG90舵机固定件.stl</span>
-                                    <span class="file-desc">3D打印专用切片文件</span>
-                                </div>
-                                <a href="./3d-files/SG90舵机固定件.stl" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">云台全套装配体.SLDASM</span>
-                                    <span class="file-desc">整体装配体约束文件</span>
-                                </div>
-                                <a href="./3d-files/云台全套装配体.SLDASM" class="file-download-btn" download>下载</a>
-                            </div>
-                        </div>
-                    </div>
-                </details>
-
-                <!-- 项目3：【复制此details块即可新增项目】 -->
-                <details>
-                    <summary>项目三：定制化硬件外壳</summary>
-                    <div class="details-content">
-                        <div class="file-list">
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">ESP32外壳上壳.SLDPRT</span>
-                                    <span class="file-desc">SolidWorks可编辑源文件</span>
-                                </div>
-                                <a href="./3d-files/ESP32外壳上壳.SLDPRT" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">ESP32外壳底座.SLDPRT</span>
-                                    <span class="file-desc">SolidWorks可编辑源文件</span>
-                                </div>
-                                <a href="./3d-files/ESP32外壳底座.SLDPRT" class="file-download-btn" download>下载</a>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <span class="file-name">外壳全套打印文件.stl</span>
-                                    <span class="file-desc">3D打印专用切片文件</span>
-                                </div>
-                                <a href="./3d-files/外壳全套打印文件.stl" class="file-download-btn" download>下载</a>
-                            </div>
-                        </div>
-                    </div>
-                </details>
-
-                <!-- 【后续新增项目，复制上面的details代码块即可，无限扩展】 -->
-            </div>
-
-            <div class="tip-box" style="margin-top: 24px;">
-                <p>💡 提示：新增项目仅需复制完整的details代码块，修改项目名称和内部文件信息即可，无需修改CSS样式</p>
-            </div>
-        </div>
-
-        <!-- 五、实践心得卡片 -->
+                <!-- 三、实践心得卡片 -->
         <div class="card">
             <h2>实践心得与注意事项</h2>
             <ul>

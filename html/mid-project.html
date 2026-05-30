@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中期项目 - 声控开关装置 | 创客实践日志</title>
+    <style>
+        /* 全局重置与基础配置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --primary-hover: #0E42C7;
+            --bg-light: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D2129;
+            --text-secondary: #4E5969;
+            --text-light: #86909C;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
+            line-height: 1.7;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部固定导航栏 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            background: #E5E6EB;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+
+        /* 页面主体容器 */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+        }
+
+        /* 头部标题区 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 36px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--primary), #4080FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-section p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin: 20px 0 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .card ul, .card ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 8px;
+        }
+
+        /* 图片展示网格 */
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .img-box {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg-light);
+            transition: var(--transition);
+        }
+
+        .img-box:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .img-box img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .img-desc {
+            padding: 12px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* 提示框 */
+        .tip-box {
+            background: #E8F3FF;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tip-box p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        /* 原材料填写区域 */
+        .material-box {
+            background: #f8f9fa;
+            border: 1px dashed #c0c4cc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            min-height: 120px;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-light);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E6EB;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 28px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+            <div class="nav-btn-group">
+                <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="nav-btn btn-primary">📂 Gitee仓库直达</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面主体 -->
+    <div class="container">
+        <!-- 头部标题 -->
+        <div class="header-section">
+            <h1>中期项目 — 声控开关装置</h1>
+            <p>小组创客实践项目，基于声音感应实现自动控制功能装置制作</p>
+        </div>
+
+        <!-- 一、项目简介 -->
+        <div class="card">
+            <h2>项目简介</h2>
+            <p>
+                本次中期项目为小组合作制作<strong>声控开关装置</strong>。装置依靠声音信号触发电路，实现电路通断控制，可应用于简易照明、小型负载控制等场景。整体结构简单、实用性强，综合运用了电路原理、电子焊接、元器件搭配等前期所学知识。
+            </p>
+            <p>
+                项目从方案构思、电路设计、元器件选型、组装焊接到通电调试，全程由小组分工完成，完成了一套完整的功能样机。
+            </p>
+        </div>
+
+        <!-- 二、使用原材料（预留填写区域） -->
+        <div class="card">
+            <h2>使用原材料与元器件</h2>
+            <p>以下为本项目所使用的全部材料、电子元器件及工具：</p>
+            <div class="material-box">
+               ESP32 s2 mini、面包板、杜邦线、ASR01语音识别模块、sg90舵机、usb供电模块等。
+            </div>
+        </div>
+
+        <!-- 三、工作原理 -->
+        <div class="card">
+            <h2>装置工作原理</h2>
+            <p>
+                声控开关主要依靠声音采集元件接收外界声响，将声波信号转换为电信号。微弱电信号经过放大、整形后，触发后续开关电路，实现负载接通；延时一段时间后电路自动断开，完成一次声控触发过程。
+            </p>
+            <p>
+                整体分为声音采集模块、信号放大模块、开关执行模块三大部分，各模块配合工作，实现“有声即启动、无声延时关闭”的基本效果。
+            </p>
+        </div>
+
+        <!-- 四、制作流程 -->
+        <div class="card">
+            <h2>项目制作流程</h2>
+            <ol>
+                <li>小组讨论确定整体方案，绘制简易电路连接图</li>
+                <li>根据电路需求清点、核对所有元器件</li>
+                <li>按照布线规划，依次完成元器件插装与焊接</li>
+                <li>检查焊点、线路，排除虚焊、短路等问题</li>
+                <li>接通电源，进行多次声控功能测试与微调</li>
+                <li>装置整体整理、固定，完成成品制作</li>
+            </ol>
+
+            <div class="tip-box">
+                <p>💡 制作要点：焊接时保证焊点牢固圆润，通电前务必检查线路，避免短路损坏元件。</p>
+            </div>
+        </div>
+
+        <!-- 五、项目实拍展示（多图预留位） -->
+        <div class="card">
+            <h2>项目过程与成品展示</h2>
+            <p>包含元器件摆放、焊接过程、调试现场、最终成品等照片：</p>
+
+            <div class="img-grid">
+                <div class="img-box">
+                    <img src="images/中期成品.jpg" alt="元器件成品摆放">
+                    <div class="img-desc">项目元器件整理</div>
+                </div>
+                    <div class="img-box">
+                    <img src="images/中期效果.jpg" alt="声控开关成品">
+                    <div class="img-desc">声控开关装置成品</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 六、问题与解决 -->
+        <div class="card">
+            <h2>制作遇到的问题及解决方法</h2>
+            <ul>
+                <li><strong>触发不灵敏</strong>：检查麦克风安装位置与线路，调整周边电阻参数，提升信号接收能力。</li>
+                <li><strong>频繁误触发</strong>：优化电路延时与阈值，降低环境杂音带来的干扰。</li>
+                <li><strong>焊点接触不良</strong>：重新补焊虚焊位置，修剪多余引脚，保证电气连接稳定。</li>
+            </ul>
+        </div>
+
+        <!-- 七、项目总结 -->
+        <div class="card">
+            <h2>项目总结与体会</h2>
+            <p>
+                本次中期声控开关项目，将课堂上学到的电路知识、焊接技能综合运用到实际制作中。小组分工协作，从设计、选材、组装到调试，一步步完成目标装置。
+            </p>
+            <p>
+                制作过程中也发现了实操经验不足、细节考虑不周全等问题，通过不断排查与修改最终实现预期功能。本次项目锻炼了动手能力、团队协作与问题排查能力，为后续综合项目积累了宝贵经验。
+            </p>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            创客实践日志 | 中期项目 - 声控开关装置
+        </footer>
+    </div>
+</body>
+</html>
