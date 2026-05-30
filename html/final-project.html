@@ -100,6 +100,35 @@ padding:15px;
 border-radius:8px;
 overflow:auto;
 }
+
+/* 新增：图片展示模块样式 */
+.image-gallery {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 15px;
+margin-top: 15px;
+}
+
+.image-card {
+border-radius: var(--border-radius);
+overflow: hidden;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.image-card img {
+width: 100%;
+height: 200px;
+object-fit: cover;
+display: block;
+}
+
+.image-caption {
+padding: 10px;
+text-align: center;
+font-size: 14px;
+color: var(--text-secondary);
+background: #fafafa;
+}
 </style>
 </head>
 
@@ -107,8 +136,8 @@ overflow:auto;
 
 <!-- 顶部 -->
 <div class="top-nav">
-<a href=" " class="nav-btn btn-back">← 返回首页</a >
-<a href="https://github.com/Xzkkkk809/maker-log" target="_blank" class="nav-btn btn-primary">GitHub</a >
+<a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+<a href="https://github.com/Xzkkkk809/maker-log" target="_blank" class="nav-btn btn-primary">GitHub</a>
 </div>
 
 <div class="container">
@@ -116,16 +145,40 @@ overflow:auto;
 <!-- 标题 -->
 <div class="header">
 <h1>🥤 干杯！专注饮水提醒杯垫</h1>
-<p>基于Arduino的智能健康提醒设备</p >
+<p>基于Arduino的智能健康提醒设备</p>
 </div>
 
 <!-- Project Profile -->
 <div class="card">
 <h2>📌 Project Profile</h2>
-<p><b>项目名称：</b>🥤 干杯！专注饮水提醒杯垫</p >
-<p><b>团队成员：</b>叶锦轩 2025112340、朱梓轩 2025112332、黄上校 2025112326、徐志康 2025112328</p >
-<p><b>个人贡献：</b>3D建模设计</p >
-<p><b>一句话定义：</b>一个可以定时提醒用户喝水的智能装置</p >
+<p><b>项目名称：</b>🥤 干杯！专注饮水提醒杯垫</p>
+<p><b>团队成员：</b>叶锦轩 2025112340、朱梓轩 2025112332、黄上校 2025112326、徐志康 2025112328</p>
+<p><b>个人贡献：</b>3D建模设计、硬件调试与代码实现</p>
+<p><b>一句话定义：</b>一个可以定时提醒用户喝水的智能装置，帮助养成规律饮水习惯</p>
+</div>
+
+<!-- 新增：产品图片展示模块 -->
+<div class="card">
+<h2>📷 现阶段产品展示</h2>
+<p>以下是项目现阶段的产品原型、电路搭建与3D打印外壳实拍：</p>
+
+<div class="image-gallery">
+<div class="image-card">
+<!-- 把src换成你自己的图片路径，比如 images/3d-model.jpg -->
+<img src="images/期末3D.jpg" alt="3D打印外壳模型">
+<div class="image-caption">3D打印外壳模型（适配杯垫尺寸）</div>
+</div>
+
+<div class="image-card">
+<img src="images/期末组装图.jpg" alt="电路搭建实拍">
+<div class="image-caption">ESP32主控电路搭建</div>
+</div>
+
+<div class="image-card">
+<img src="images/assembly.jpg" alt="产品组装效果">
+<div class="image-caption">电路与外壳组装完成效果</div>
+</div>
+</div>
 </div>
 
 <!-- Design Log -->
@@ -133,32 +186,33 @@ overflow:auto;
 <h2>🕒 Design Log（时间轴）</h2>
 
 <h3>周二晚上</h3>
-<p>确定项目方向，设计基本功能，选择Arduino作为核心控制器。进行电路搭建，初次测试失败，发现蜂鸣器接线错误，且烧坏主板。</p >
+<p>确定项目方向，设计基本功能：定时提醒饮水、按钮重置计时。选择ESP32作为核心控制器，初步规划电路结构。初次测试蜂鸣器时接线错误，导致主板烧坏，暂停进度排查问题。</p>
 
 <h3>周三晚上</h3>
-<p>修复硬件问题并完成电路控制部分，实现稳定提醒功能。</p >
+<p>更换新的ESP32开发板，放弃蜂鸣器方案，改用红绿LED灯作为状态提醒：绿灯代表计时中，红灯代表饮水提醒。完成电路接线与代码调试，实现稳定的定时提醒与按钮重置功能。</p>
 
 <h3>周四晚上</h3>
-<p>网上找到开源杯垫模型，并进行适配修改和打印</p >
+<p>基于开源杯垫模型进行3D建模修改，调整尺寸以适配电路模块，导出打印文件并提交打印。</p>
 
 <h3>周六上午</h3>
-<p>完成产品外壳与电路部分的组装</p >
+<p>3D打印外壳完成，进行电路与外壳的组装测试，调整模块位置，确保杯垫结构稳定、电路无短路风险。</p>
 </div>
 
 <!-- Tech Stack -->
 <div class="card">
 <h2>⚙️ Tech Stack & Code</h2>
 
-<p><b>硬件清单：</b></p >
+<p><b>硬件清单：</b></p>
 <ul>
-<li>ESP32 s2 mini</li>
-<li>杜邦线</li>
-<li>红，绿LED灯</li>
-<li>电阻</li>
-<li>面包板</li>
+<li>ESP32 S2 Mini 开发板</li>
+<li>红绿LED灯各1个</li>
+<li>220Ω电阻2个</li>
+<li>轻触按钮1个</li>
+<li>面包板 & 杜邦线若干</li>
+<li>3D打印杯垫外壳</li>
 </ul>
 
-<p><b>核心代码：</b></p >
+<p><b>核心代码：</b></p>
 <pre>
 const int redLED = 2;
 const int greenLED = 9;
@@ -171,25 +225,25 @@ void setup() {
   pinMode(greenLED, OUTPUT);
   pinMode(button, INPUT_PULLUP);
   
-  // 开机绿灯亮
+  // 开机绿灯亮，表示正常工作
   digitalWrite(redLED, LOW);
   digitalWrite(greenLED, HIGH);
 }
 
 void loop() {
-  // 按钮按下
+  // 按钮按下（低电平触发）
   if (digitalRead(button) == LOW) {
     if (pressTime == 0) {
       pressTime = millis();
     }
 
-    // 按满3秒 → 红灯亮
+    // 长按3秒触发饮水提醒，红灯亮
     if (millis() - pressTime >= 3000) {
       digitalWrite(redLED, HIGH);
       digitalWrite(greenLED, LOW);
     }
   } 
-  // 按钮松开 → 立刻回到绿灯
+  // 按钮松开，重置状态，绿灯恢复
   else {
     pressTime = 0;
     digitalWrite(redLED, LOW);
@@ -204,10 +258,10 @@ void loop() {
 <div class="card">
 <h2>🧠 Reflections</h2>
 
-<p><b>遇到问题：</b>蜂鸣器无法正常工作，且风险极大，烧坏3块电路板</p >
-<p><b>原因分析：</b>接线错误 + 程序逻辑不完善</p >
-<p><b>解决方法：</b>放弃蜂鸣器，改用红绿LED灯作为提醒装置</p >
-<p><b>经验总结：</b>硬件与软件必须同步调试，逐步排查问题</p >
+<p><b>遇到问题：</b>蜂鸣器模块接线错误，导致3块ESP32开发板烧坏，项目进度一度停滞。</p>
+<p><b>原因分析：</b>未加限流电阻，且蜂鸣器正负极接反，导致电路短路；同时代码逻辑不完善，没有处理异常状态。</p>
+<p><b>解决方法：</b>放弃蜂鸣器方案，改用红绿LED灯作为提醒装置，电路结构更简单、风险更低；为LED灯添加限流电阻，避免再次烧坏元件。</p>
+<p><b>经验总结：</b>硬件项目必须遵循「分步调试」原则，先单独测试每个模块，再整体组装；涉及电源和大电流元件时，必须做好限流、防反接保护，避免不可逆的硬件损坏。</p>
 
 </div>
 
