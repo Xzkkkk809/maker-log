@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设计思维 - 创客实践日志</title>
+    <style>
+        /* 全局重置与基础配置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --primary-hover: #0E42C7;
+            --bg-light: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D2129;
+            --text-secondary: #4E5969;
+            --text-light: #86909C;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
+            line-height: 1.7;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部固定导航栏 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            background: #E5E6EB;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+
+        /* 页面主体容器 */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+        }
+
+        /* 头部标题区 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-section h1 {
+            font-size: 36px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--primary), #4080FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-section p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card h2 {
+            font-size: 24px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: var(--text-main);
+            margin: 20px 0 12px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .card ul, .card ol {
+            margin-left: 24px;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 8px;
+        }
+
+       /* 图片展示网格 */
+.img-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(48%, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.img-box {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-light);
+    transition: var(--transition);
+}
+
+.img-box:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.img-box img {
+    width: 100%;
+    height: auto; /* 改为自适应高度 */
+    object-fit: contain; /* 改为完整显示图片 */
+    display: block;
+}
+
+.img-desc {
+    padding: 12px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+        /* 提示框 */
+        .tip-box {
+            background: #E8F3FF;
+            border-left: 4px solid var(--primary);
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tip-box p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--text-light);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E6EB;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 28px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .img-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+            <div class="nav-btn-group">
+                <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="nav-btn btn-primary">📂 Gitee仓库直达</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面主体 -->
+    <div class="container">
+        <!-- 头部标题 -->
+        <div class="header-section">
+            <h1>设计思维</h1>
+            <p>以人为本的创新方法论，五大核心步骤学习与课堂实践</p>
+        </div>
+
+        <!-- 一、课程概述 -->
+        <div class="card">
+            <h2>课程概述</h2>
+            <p>
+                设计思维是一种以人为本的创新思考方式，它不是一套固定的线性流程，而是一个循环迭代的过程，帮助我们理解用户、定义问题、构思方案并快速验证。本节课以设计思维方法论为核心，学习其五大核心步骤，并通过小组讨论完成课堂实践。
+            </p>
+            <p>
+                课程参考设计思维工具卡的理念，学习一套可随身携带的设计方法，这些方法适用于创客项目、产品设计、服务设计等多种场景。
+            </p>
+        </div>
+
+        <!-- 二、五大核心步骤 -->
+        <div class="card">
+            <h2>五大核心步骤详解</h2>
+            <!-- 核心图片位置 -->
+            <div class="img-box">
+                <img src="images/设计思维.png" alt="设计思维五大步骤图示">
+                <div class="img-desc">设计思维五大步骤循环流程（参考图示）</div>
+            </div>
+
+            <h3>1. 共情（Empathize）</h3>
+            <p>
+                设计思维的起点，核心是站在用户的角度理解问题。通过观察、访谈、体验等方式，深入了解用户的真实需求、痛点与情感，避免主观臆断，为后续设计打下基础。
+            </p>
+
+            <h3>2. 定义（Define）</h3>
+            <p>
+                对共情阶段收集到的信息进行整理、分析，提炼出核心问题，形成清晰的问题定义。这一步的关键是从用户需求出发，精准描述“为谁解决什么问题”。
+            </p>
+
+            <h3>3. 构想（Ideate）</h3>
+            <p>
+                发散思维的关键阶段，通过头脑风暴等方式，尽可能多地提出创意想法。此阶段不限制想法的好坏，重在数量，鼓励跨界、夸张的创意，为后续筛选提供充足素材。
+            </p>
+
+            <h3>4. 原型（Prototype）</h3>
+            <p>
+                将筛选出的创意快速转化为可触摸的实体或模型，哪怕是简易版本。原型的目的不是追求完美，而是让想法可视化，便于测试、沟通与迭代。
+            </p>
+
+            <h3>5. 测试（Test）</h3>
+            <p>
+                将原型交付给用户使用，收集反馈，验证方案是否真正解决了用户问题。根据测试结果，回到之前的步骤进行优化，形成“测试-迭代-再测试”的循环。
+            </p>
+
+            <div class="tip-box">
+                <p>💡 设计思维不是单向流程，而是可以随时回到前面步骤的循环过程，每个步骤都能为设计带来新的启发。</p>
+            </div>
+        </div>
+
+        <!-- 三、课堂小组实践 -->
+        <div class="card">
+            <h2>课堂小组实践记录</h2>
+            <p>
+                结合课堂学习的五大步骤，我们小组围绕【喝水提醒装置】开展了设计思维实践，完整走完了共情、定义、构想阶段的练习。
+            </p>
+
+            <!-- 小组讨论成果图片位置 -->
+            <div class="img-grid">
+                <div class="img-box">
+                    <img src="images/成员.png" alt="小组成员">
+                    <div class="img-desc">小组成员</div>
+                </div>
+                <div class="img-box">
+                    <img src="images/头脑风暴.png" alt="创意想法记录">
+                    <div class="img-desc">头脑风暴创意想法记录</div>
+                </div>
+                <div class="img-box">
+                    <img src="images/项目得分.png" alt="问题定义与分析">
+                    <div class="img-desc">核心问题定义与分析记录</div>
+                </div>
+                <div class="img-box">
+                    <img src="images/草案.png" alt="初步创意草图">
+                    <div class="img-desc">初步创意方案草图</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 四、学习总结 -->
+        <div class="card">
+            <h2>学习总结与体会</h2>
+            <p>
+                通过本节课的学习，我理解了设计思维“以人为本”的核心思想，熟悉了五大步骤的具体内容与循环迭代的特点。在小组实践中，从用户角度出发分析问题、提出创意，让我意识到设计不是凭空想象，而是建立在对用户的深刻理解之上。
+            </p>
+            <p>
+                这套方法不仅适用于设计项目，也能帮助我在后续的创客实践中更有条理地解决问题，学会用用户视角思考，用创意方式落地想法。
+            </p>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            创客实践日志 | 设计思维 | 内容持续更新中
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简介 - 创客实践日志</title>
+    <style>
+        /* 全局变量与样式重置 - 与其他页面完全统一 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --primary-hover: #0E42C7;
+            --bg-light: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D2129;
+            --text-secondary: #4E5969;
+            --text-light: #86909C;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
+            line-height: 1.7;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部固定导航条 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            background: #E5E6EB;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+
+        /* 页面主体容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero区域 - 个人信息头部 */
+        .hero {
+            margin-top: 50px;
+            margin-bottom: 40px;
+            text-align: center;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, #4080FF 100%);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 32px;
+            margin-bottom: 28px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card h2 {
+            font-size: 22px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        /* 个人信息网格 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .info-item {
+            background: var(--bg-light);
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .info-item .label {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .info-item .value {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* 规划列表 */
+        .plan-list {
+            margin-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        .plan-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .plan-list li::marker {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-light);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E6EB;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .hero {
+                margin-top: 30px;
+                padding: 40px 24px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .card {
+                padding: 24px;
+            }
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航条 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-btn-group">
+                <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+            </div>
+            <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="nav-btn btn-primary">
+                📂 Gitee仓库直达
+            </a>
+        </div>
+    </nav>
+
+    <!-- 页面主体 -->
+    <div class="container">
+        <!-- Hero区域 - 个人信息头部 -->
+        <div class="hero">
+            <h1>徐志康</h1>
+            <p>人工智能专业 · 创客实践课程学习者</p>
+        </div>
+
+        <!-- 基础信息卡片 -->
+        <div class="card">
+            <h2>基础信息</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label">姓名</div>
+                    <div class="value">徐志康</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">学号</div>
+                    <div class="value">2025112328</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">专业</div>
+                    <div class="value">人工智能</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 学习目标卡片 -->
+        <div class="card">
+            <h2>学习目标</h2>
+            <p>
+                通过创客实践课程，系统掌握3D设计与打印、电子焊接、嵌入式开发、PCB设计等核心技能，完成从创意到实物的完整项目落地，培养创新思维与工程实践能力，为后续专业学习和项目开发打下坚实基础。
+            </p>
+        </div>
+
+        <!-- 实践经历卡片 -->
+        <div class="card">
+            <h2>实践经历</h2>
+            <p>
+                正在进行Arduino嵌入式开发入门学习，已完成ESP32 S2 Mini开发环境搭建与基础LED控制实验；
+                掌握SolidWorks参数化建模基础，已完成多个零件的3D设计与FDM 3D打印实践；
+                正在学习Git版本控制工具，已完成Gitee仓库创建与基础代码提交流程。
+            </p>
+            <!-- 你可以在这里补充更多你的实践经历，或者添加图片展示 -->
+        </div>
+
+        <!-- 课程规划卡片 -->
+        <div class="card">
+            <h2>课程规划</h2>
+            <ol class="plan-list">
+                <li>完成Git基础学习，熟练使用版本控制工具管理项目代码与文档；</li>
+                <li>掌握3D建模与3D打印全流程，完成个性化结构件与外壳的设计制作；</li>
+                <li>精通电子焊接与电路调试，独立完成基础电路搭建与传感器调试；</li>
+                <li>深入学习嵌入式开发，基于ESP32 S2 Mini实现硬件与软件的联动控制；</li>
+                <li>完成中期与期末创客项目，落地完整的创新作品，实现从创意到实物的全流程。</li>
+            </ol>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>© 2026 创客实践日志 | 个人简介 | 内容持续更新中</p>
+        </footer>
+    </div>
+</body>
+</html>

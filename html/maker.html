@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>什么是创客 - 创客实践日志</title>
+    <style>
+        /* 全局变量与样式重置 - 与其他页面完全统一 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #165DFF;
+            --primary-hover: #0E42C7;
+            --bg-light: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #1D2129;
+            --text-secondary: #4E5969;
+            --text-light: #86909C;
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", 微软雅黑, sans-serif;
+            line-height: 1.7;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            padding-bottom: 60px;
+        }
+
+        /* 顶部固定导航条 */
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: var(--bg-light);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover {
+            background: #E5E6EB;
+            color: var(--text-main);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
+        }
+
+        /* 页面主体容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero区域 - 大标题 */
+        .hero {
+            margin-top: 50px;
+            margin-bottom: 40px;
+            text-align: center;
+            padding: 50px 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, #4080FF 100%);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            padding: 32px;
+            margin-bottom: 28px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card h2 {
+            font-size: 22px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-indent: 2em;
+        }
+
+        .card ul {
+            margin-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        .card li {
+            margin-bottom: 10px;
+        }
+
+        .card li strong {
+            color: var(--text-main);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--text-light);
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #E5E6EB;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .hero {
+                margin-top: 30px;
+                padding: 40px 24px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部固定导航条 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-btn-group">
+                <a href="index.html" class="nav-btn btn-back">← 返回首页</a>
+            </div>
+            <a href="https://gitee.com/xzk-creator/xxxxxxzzk" target="_blank" class="nav-btn btn-primary">
+                📂 Gitee仓库直达
+            </a>
+        </div>
+    </nav>
+
+    <!-- 页面主体 -->
+    <div class="container">
+        <!-- Hero区域 - 大标题 -->
+        <div class="hero">
+            <h1>什么是创客</h1>
+            <p>源于热爱，成于动手，归于分享</p>
+        </div>
+
+        <!-- 核心定义卡片 -->
+        <div class="card">
+            <h2>一、创客的核心定义</h2>
+            <p>
+                创客，译自英文“Maker”，指的是出于兴趣与热爱，以创新为核心理念，通过动手实践将创意想法转化为现实成果的群体。
+                创客不以商业盈利为唯一目标，核心是享受创造的过程，崇尚“知行合一”，拒绝空想，擅长利用各类技术、工具与跨学科知识，
+                把脑海里的创意落地为可触摸、可运行、可分享的实体作品。
+            </p>
+            <p>
+                简单来说，创客就是“动手做的创新者”，小到一个手工摆件、一个电子小装置，大到一个开源硬件项目、一套智能控制系统，
+                只要是源于创意、成于动手、归于分享，都属于创客的实践范畴。
+            </p>
+        </div>
+
+        <!-- 起源与发展卡片 -->
+        <div class="card">
+            <h2>二、创客的起源与发展</h2>
+            <p>
+                创客文化起源于美国的“创客运动”，伴随开源硬件、3D打印技术、互联网与个人制造工具的普及而快速兴起。
+                早期的创客群体聚集在车库、创客空间，分享技术、协作创作，诞生了大量影响全球的开源项目与创新产品。
+            </p>
+            <p>
+                随着国内“大众创业、万众创新”的推进，创客文化在国内快速落地，创客空间、创客教育逐步走进校园与大众视野。
+                如今的创客早已不是小众的技术爱好者，而是涵盖了学生、工程师、设计师、艺术家等不同群体，成为推动全民创新、实践教育的核心力量。
+            </p>
+        </div>
+
+        <!-- 核心精神与特质卡片 -->
+        <div class="card">
+            <h2>三、创客的核心精神与特质</h2>
+            <ul>
+                <li><strong>动手实践，拒绝空想</strong>：创客的核心是“做”，而非“想”。哪怕是不成熟的创意，也会通过动手尝试不断打磨、落地，在实践中解决问题。</li>
+                <li><strong>开源分享，共同进步</strong>：创客群体崇尚开源精神，乐于公开自己的设计图纸、代码、制作过程与踩坑经验，让更多人可以基于开源内容二次创作，推动技术普惠与创新迭代。</li>
+                <li><strong>跨界融合，打破边界</strong>：创客创作往往不局限于单一学科，会融合机械设计、电子电路、编程开发、工业设计、艺术创作等多个领域的知识，打破学科与行业的边界。</li>
+                <li><strong>兴趣驱动，终身学习</strong>：支撑创客持续创作的核心是热爱与好奇心。为了实现创意，创客会主动学习新的技术、工具与知识，形成终身学习的习惯。</li>
+            </ul>
+        </div>
+
+        <!-- 核心实践领域卡片 -->
+        <div class="card">
+            <h2>四、创客的核心实践领域</h2>
+            <p>
+                创客的创作没有固定的边界，只要能实现创意，所有工具与技术都可以为创客所用。结合创客教育的核心内容，主流的实践方向包括：
+            </p>
+            <ul>
+                <li>版本控制与项目管理：使用Git工具管理项目代码与文档，实现创作过程的版本追溯与团队协作；</li>
+                <li>3D设计与3D打印：通过建模软件完成三维设计，借助3D打印机实现实体化制作，完成结构件、创意模型的定制；</li>
+                <li>电子焊接与硬件开发：掌握基础电路知识，完成元器件焊接、硬件调试，制作各类电子装置；</li>
+                <li>嵌入式计算与编程：基于单片机、嵌入式开发板，通过编程实现智能控制，完成物联网、智能硬件等项目；</li>
+                <li>PCB设计：完成电路原理图与PCB版图设计，制作定制化的电路板，实现硬件项目的集成与优化；</li>
+                <li>创新项目开发：基于真实需求，完成从创意构思、方案设计、动手制作到成果演示的完整项目开发。</li>
+            </ul>
+        </div>
+
+        <!-- 创客与创客教育卡片 -->
+        <div class="card">
+            <h2>五、创客与创客教育</h2>
+            <p>
+                创客教育是创客文化与教育的结合，核心是通过项目式学习、动手实践，培养创新思维、解决问题的能力与跨学科协作能力。
+                它打破了传统教育中“书本至上”的局限，让学习者在“做中学、创中学”的过程中，真正把知识转化为能力，
+                同时培养终身学习的习惯与勇于试错、乐于分享的创客精神。
+            </p>
+        </div>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>© 2026 创客实践日志 | 什么是创客 | 内容持续更新中</p>
+        </footer>
+    </div>
+</body>
+</html>
