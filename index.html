@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>创客实践HTML日志 - 首页</title>
     <style>
-        /* 全局变量与样式重置 - 与其他页面完全统一 */
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +34,6 @@
             padding-bottom: 60px;
         }
 
-        /* 顶部固定导航条 */
         .top-nav {
             position: sticky;
             top: 0;
@@ -78,14 +76,12 @@
             box-shadow: 0 4px 12px rgba(22, 93, 255, 0.3);
         }
 
-        /* 页面主体容器 */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Hero区域 - 视觉焦点 */
         .hero {
             margin-top: 50px;
             margin-bottom: 50px;
@@ -110,7 +106,6 @@
             margin: 0 auto;
         }
 
-        /* 导航卡片网格 */
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -153,7 +148,6 @@
             color: var(--text-main);
         }
 
-        /* 内容总览卡片 */
         .overview-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -175,7 +169,6 @@
             margin-bottom: 16px;
         }
 
-        /* 页脚 */
         footer {
             text-align: center;
             color: var(--text-light);
@@ -184,7 +177,6 @@
             border-top: 1px solid #E5E6EB;
         }
 
-        /* 响应式适配 */
         @media (max-width: 768px) {
             .hero {
                 margin-top: 30px;
@@ -210,7 +202,6 @@
     </style>
 </head>
 <body>
-    <!-- 顶部固定导航条 -->
     <nav class="top-nav">
         <div class="nav-container">
             <span class="nav-title">🏠 创客实践HTML日志</span>
@@ -220,69 +211,65 @@
         </div>
     </nav>
 
-    <!-- 页面主体 -->
     <div class="container">
-        <!-- Hero区域 - 大标题 -->
         <div class="hero">
             <h1>创客实践HTML日志</h1>
             <p>记录从入门到创新的完整实践历程，涵盖工具使用、设计思维、硬件开发与项目落地</p>
         </div>
 
-        <!-- 导航卡片网格 - 核心入口，10个板块全覆盖 -->
         <div class="nav-grid">
-            <a href="intro.html" class="nav-card">
+            <a href="html/intro.html" class="nav-card">
                 <span class="icon">👤</span>
                 <span class="num">01</span>
                 <span class="title">个人简介</span>
             </a>
-            <a href="maker.html" class="nav-card">
+            <a href="html/maker.html" class="nav-card">
                 <span class="icon">🛠️</span>
                 <span class="num">02</span>
                 <span class="title">什么是创客</span>
             </a>
-            <a href="git.html" class="nav-card">
+            <a href="html/git.html" class="nav-card">
                 <span class="icon">📂</span>
                 <span class="num">03</span>
                 <span class="title">Git</span>
             </a>
-            <a href="3d.html" class="nav-card">
+            <a href="html/3d.html" class="nav-card">
                 <span class="icon">🖨️</span>
                 <span class="num">04</span>
                 <span class="title">3D设计与3D打印</span>
             </a>
-            <a href="weld.html" class="nav-card">
+            <a href="html/weld.html" class="nav-card">
                 <span class="icon">🔌</span>
                 <span class="num">05</span>
                 <span class="title">电子焊接</span>
             </a>
-            <a href="embed.html" class="nav-card">
+            <a href="html/embed.html" class="nav-card">
                 <span class="icon">💻</span>
                 <span class="num">06</span>
                 <span class="title">嵌入式计算</span>
             </a>
-            <a href="mid-project.html" class="nav-card">
+            <a href="html/mid-project.html" class="nav-card">
                 <span class="icon">🚀</span>
                 <span class="num">07</span>
                 <span class="title">中期创客项目</span>
             </a>
-            <a href="pcb.html" class="nav-card">
+            <a href="html/pcb.html" class="nav-card">
                 <span class="icon">🔧</span>
                 <span class="num">08</span>
                 <span class="title">PCB设计</span>
             </a>
-            <a href="design.html" class="nav-card">
+            <a href="html/design.html" class="nav-card">
                 <span class="icon">💡</span>
                 <span class="num">09</span>
                 <span class="title">设计思维</span>
             </a>
-            <a href="final-profile.html" class="nav-card">
+            <a href="html/final-profile.html" class="nav-card">
                 <span class="icon">🏆</span>
                 <span class="num">10</span>
                 <span class="title">期末创新项目</span>
             </a>
         </div>
 
-        <!-- 日志总览卡片 -->
         <div class="overview-card">
             <h2>日志总览</h2>
             <p>
@@ -293,7 +280,6 @@
             </p>
         </div>
 
-        <!-- 页脚 -->
         <footer>
             <p>© 2026 创客实践日志 | 基于 Git + HTML 构建 | 内容持续更新中</p>
         </footer>
