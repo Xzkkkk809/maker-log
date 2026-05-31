@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>反思 & 演示 | 干杯！专注饮水提醒杯垫</title>
+<style>
+:root{
+--primary:#165DFF;
+--bg-light:#F5F7FA;
+--card-bg:#FFFFFF;
+--text-main:#1D2129;
+--text-secondary:#4E5969;
+--border-gray:#E5E6EB;
+--border-radius:12px;
+}
+*,*::before,*::after{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+body{
+font-family:"Microsoft YaHei",sans-serif;
+background:var(--bg-light);
+color:var(--text-main);
+font-size:16px;
+line-height:1.8;
+}
+.top-nav{
+position:sticky;
+top:0;
+background:#fff;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px 2rem;
+z-index:100;
+}
+.nav-back,.nav-next{
+display:flex;
+align-items:center;
+gap:8px;
+text-decoration:none;
+color:var(--text-secondary);
+font-size:14px;
+transition:color 0.2s;
+}
+.nav-back:hover,.nav-next:hover{
+color:var(--primary);
+}
+.nav-progress{
+display:flex;
+gap:6px;
+}
+.nav-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--border-gray);
+text-decoration:none;
+transition:background 0.2s;
+}
+.nav-dot.active{
+background:var(--primary);
+}
+.main{
+max-width:900px;
+margin:0 auto;
+padding:80px 2rem 4rem;
+}
+.page-eyebrow{
+font-size:13px;
+color:var(--primary);
+letter-spacing:0.2em;
+margin-bottom:0.8rem;
+}
+.page-title{
+font-size:2.2rem;
+font-weight:700;
+color:var(--text-main);
+margin-bottom:1rem;
+}
+.page-desc{
+font-size:0.95rem;
+color:var(--text-secondary);
+max-width:600px;
+line-height:1.9;
+}
+.divider{
+width:40px;
+height:2px;
+background:linear-gradient(90deg,var(--primary),transparent);
+margin:1.5rem 0;
+border-radius:2px;
+}
+.block{
+margin-bottom:3rem;
+}
+.block-title{
+font-size:15px;
+color:var(--primary);
+letter-spacing:0.15em;
+text-transform:uppercase;
+margin-bottom:1.2rem;
+display:flex;
+align-items:center;
+gap:8px;
+}
+.block-title::after{
+content:'';
+flex:1;
+height:1px;
+background:var(--border-gray);
+}
+.tag{
+display:inline-block;
+padding:2px 8px;
+border-radius:4px;
+font-size:12px;
+margin:2px;
+}
+.tag-teal{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,255,0.2);
+}
+.tag-blue{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,0.2);
+}
+.tag-amber{
+background:rgba(255,159,64,0.12);
+color:#f59e0b;
+border:1px solid rgba(255,159,64,0.2);
+}
+/* 翻转卡片 */
+.flip-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:16px;
+}
+.flip-card{
+height:200px;
+perspective:1000px;
+cursor:pointer;
+}
+.flip-inner{
+position:relative;
+width:100%;
+height:100%;
+transition:transform 0.6s;
+transform-style:preserve-3d;
+}
+.flip-card:hover .flip-inner{
+transform:rotateY(180deg);
+}
+.flip-front,.flip-back{
+position:absolute;
+width:100%;
+height:100%;
+backface-visibility:hidden;
+border-radius:var(--radius);
+padding:1.3rem;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+.flip-front{
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+}
+.flip-back{
+background:var(--bg-light);
+border:1px solid var(--border-gray);
+transform:rotateY(180deg);
+}
+.flip-label{
+font-family:"Consolas","Courier New",monospace;
+font-size:0.65rem;
+letter-spacing:0.1em;
+margin-bottom:0.5rem;
+}
+.flip-title{
+font-size:0.9rem;
+color:var(--text-main);
+font-weight:500;
+}
+.flip-body{
+font-size:0.8rem;
+color:var(--text-secondary);
+line-height:1.6;
+}
+.flip-hint{
+font-family:"Consolas","Courier New",monospace;
+font-size:0.65rem;
+color:var(--text-secondary);
+}
+/* 迭代时间线 */
+.iter-timeline{
+position:relative;
+padding-left:2rem;
+}
+.iter-timeline::before{
+content:'';
+position:absolute;
+left:6px;
+top:8px;
+bottom:8px;
+width:1px;
+background:linear-gradient(to bottom,var(--primary),var(--border-gray));
+}
+.iter-item{
+position:relative;
+padding-bottom:1.8rem;
+}
+.iter-item:last-child{
+padding-bottom:0;
+}
+.iter-item::before{
+content:'';
+position:absolute;
+left:-1.65rem;
+top:8px;
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--primary);
+border:2px solid var(--bg-light);
+}
+.iter-version{
+font-size:0.7rem;
+color:var(--primary);
+margin-bottom:0.3rem;
+}
+.iter-title{
+font-size:0.95rem;
+font-weight:500;
+color:var(--text-main);
+margin-bottom:0.3rem;
+}
+.iter-insight{
+font-size:0.82rem;
+color:var(--text-secondary);
+line-height:1.7;
+}
+/* 演示流程 */
+.demo-flow{
+display:flex;
+align-items:stretch;
+gap:0;
+overflow-x:auto;
+padding-bottom:0.5rem;
+}
+.demo-step{
+flex:1;
+min-width:130px;
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+padding:1rem;
+text-align:center;
+}
+.demo-step:first-child{
+border-radius:var(--radius) 0 0 var(--radius);
+}
+.demo-step:last-child{
+border-radius:0 var(--radius) var(--radius);
+}
+.demo-step+.demo-step{
+border-left:none;
+}
+.demo-step-icon{
+font-size:1.5rem;
+margin-bottom:0.4rem;
+}
+.demo-step-label{
+font-family:"Consolas","Courier New",monospace;
+font-size:0.65rem;
+color:var(--text-secondary);
+margin-bottom:0.3rem;
+}
+.demo-step-text{
+font-size:0.75rem;
+color:var(--text-secondary);
+line-height:1.5;
+}
+.demo-arrow{
+display:flex;
+align-items:center;
+color:var(--text-secondary);
+font-size:1rem;
+padding:0 4px;
+flex-shrink:0;
+}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="final-3d.html" class="nav-back">← 3D建模</a>
+  <div class="nav-progress">
+    <a href="final-profile.html" class="nav-dot"></a>
+    <a href="final-designlog.html" class="nav-dot"></a>
+    <a href="final-tech.html" class="nav-dot"></a>
+    <a href="final-3d.html" class="nav-dot"></a>
+    <a href="final-reflection.html" class="nav-dot active"></a>
+  </div>
+  <a href="index.html" class="nav-next" style="color:var(--primary);">返回主页 ↩</a>
+</nav>
+
+<main class="main">
+  <div style="margin-bottom:2.5rem;">
+    <div class="page-eyebrow">// 05 · Reflections & Demo</div>
+    <h1 class="page-title">反思 & 演示</h1>
+    <p class="page-desc">从 MVP 到加入语音模块、防作弊判定的完整迭代反思，以及遇到的硬核 Bug 和解决过程。</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 迭代反思 -->
+  <div class="block">
+    <div class="block-title">迭代过程反思 / Iteration Insights</div>
+    <div class="iter-timeline">
+      <div class="iter-item">
+        <div class="iter-version">MVP · V1.0 → 发现问题</div>
+        <div class="iter-title">蜂鸣器提醒太生硬</div>
+        <div class="iter-insight">最初版本只有蜂鸣器发出声响，测试时发现这个提醒方式很突兀，容易让人感到烦躁而不是被温和提醒。这让我们意识到"提醒"这件事本身也需要被设计——提醒的方式直接影响用户是否愿意接受它。</div>
+      </div>
+      <div class="iter-item">
+        <div class="iter-version">V1.5 → 加入正向反馈</div>
+        <div class="iter-title">绿灯闪烁记录喝水次数</div>
+        <div class="iter-insight">原版只有"惩罚"没有"奖励"。加入绿灯闪烁记录喝水次数后，用户每次喝水都能看到今天喝了几次，产生了成就感。这个细节让整个交互从单向催促变成了双向反馈。</div>
+      </div>
+      <div class="iter-item">
+        <div class="iter-version">V2.0 → 最大升级</div>
+        <div class="iter-title">引入 ASR01 语音模块</div>
+        <div class="iter-insight">加入语音播报"喝水吧"是整个项目最大的技术跨越。ASR01 通过串口与 ESP32 交互，需要调试波特率和触发指令格式。语音提醒比蜂鸣器更自然，更像一个关心你的助手，而不是一个在催你的闹钟。</div>
+      </div>
+      <div class="iter-item">
+        <div class="iter-version">V2.1 → 最有创意的细节</div>
+        <div class="iter-title">防作弊：3 秒判定机制</div>
+        <div class="iter-insight">测试中发现用户可以只是把杯子拿起来立刻放回去就能"重置"提醒，完全绕过了喝水的目的。加入 3 秒判定后，必须真正拿起来喝水（超过 3 秒）才算有效。这个细节体现了"以用户行为为中心"的设计思考——不只是实现功能，还要考虑用户会如何"对付"这个功能。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 翻转Bug卡片 -->
+  <div class="block">
+    <div class="block-title">Bug & 风险复盘（悬停翻转）</div>
+    <div class="flip-grid">
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div>
+              <div class="flip-label" style="color:#fc8181;">BUG 01</div>
+              <div class="flip-title">轻触开关被持续压坏</div>
+            </div>
+            <div>
+              <div class="flip-body">水杯长时间压在开关上，可能导致开关损坏，状态检测失误。</div>
+              <div class="flip-hint" style="margin-top:0.5rem;">↗ 悬停查看解决方案</div>
+            </div>
+          </div>
+          <div class="flip-back">
+            <div>
+              <div class="flip-label" style="color:var(--primary);">SOLUTION</div>
+              <div class="flip-title" style="color:var(--primary);">备用按钮模拟</div>
+            </div>
+            <div class="flip-body">若开关故障，改用按钮手动模拟放杯/取杯动作，展示逻辑完全相同。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div>
+              <div class="flip-label" style="color:#fc8181;">BUG 02</div>
+              <div class="flip-title">ASR01 串口调试困难</div>
+            </div>
+            <div>
+              <div class="flip-body">ASR01 模块与 ESP32 的串口通信波特率不匹配，导致语音无法正常触发。</div>
+              <div class="flip-hint" style="margin-top:0.5rem;">↗ 悬停查看解决方案</div>
+            </div>
+          </div>
+          <div class="flip-back">
+            <div>
+              <div class="flip-label" style="color:var(--primary);">SOLUTION</div>
+              <div class="flip-title" style="color:var(--primary);">统一波特率 + 指令格式</div>
+            </div>
+            <div class="flip-body">调整双方波特率一致，确认 ASR01 触发指令格式后，语音播报稳定运行。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip-card">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <div>
+              <div class="flip-label" style="color:var(--accent3);">RISK</div>
+              <div class="flip-title">砍功能优先级</div>
+            </div>
+            <div>
+              <div class="flip-body">时间不足时应该先砍哪个功能，如何保证核心演示不受影响？</div>
+              <div class="flip-hint" style="margin-top:0.5rem;">↗ 悬停查看方案</div>
+            </div>
+          </div>
+          <div class="flip-back">
+            <div>
+              <div class="flip-label" style="color:var(--primary);">DECISION</div>
+              <div class="flip-title" style="color:var(--primary);">核心 > 语音 > 防作弊 > 外观</div>
+            </div>
+            <div class="flip-body">先保证红绿灯提醒逻辑，再保语音，防作弊判定可简化，外观最后考虑。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 演示流程 -->
+  <div class="block">
+    <div class="block-title">现场演示脚本 / Demo Script</div>
+    <div class="demo-flow">
+      <div class="demo-step" style="border-radius:var(--radius) 0 0 var(--radius);">
+        <div class="demo-step-icon">🟢</div>
+        <div class="demo-step-label">待机</div>
+        <div class="demo-step-text">放上水杯，绿灯常亮开始计时</div>
+      </div>
+      <div class="demo-arrow">→</div>
+      <div class="demo-step">
+        <div class="demo-step-icon">🟡</div>
+        <div class="demo-step-label">8秒后</div>
+        <div class="demo-step-text">红绿交替+语音"喝水吧"</div>
+      </div>
+      <div class="demo-arrow">→</div>
+      <div class="demo-step">
+        <div class="demo-step-icon">🔴</div>
+        <div class="demo-step-label">再过4秒</div>
+        <div class="demo-step-text">纯红灯持续闪烁</div>
+      </div>
+      <div class="demo-arrow">→</div>
+      <div class="demo-step">
+        <div class="demo-step-icon">💧</div>
+        <div class="demo-step-label">拿起喝水</div>
+        <div class="demo-step-text">超过3秒后放回</div>
+      </div>
+      <div class="demo-arrow">→</div>
+      <div class="demo-step" style="border-radius:0 var(--radius) var(--radius);">
+        <div class="demo-step-icon">🟢</div>
+        <div class="demo-step-label">有效！</div>
+        <div class="demo-step-text">绿灯闪烁次数+1，回到待机</div>
+      </div>
+    </div>
+  </div>
+
+ <!-- 演示视频 -->
+<div class="block">
+  <div class="block-title">演示视频 / Demo Video</div>
+  <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);overflow:hidden;">
+    <video controls style="width:100%;display:block;max-height:500px;background:#000;">
+      <source src="images/demo.mp4" type="video/mp4">
+      <!-- 路径改成和HTML同目录的demo.mp4，先排除路径问题 -->
+      <p style="color:var(--text-secondary);padding:1rem;">
+        您的浏览器不支持视频播放，请直接下载观看：
+        <a href="demo.mp4" style="color:var(--primary);">干杯！专注饮水提醒杯垫演示视频</a>
+      </p>
+    </video>
+    <div style="padding:0.8rem 1rem;font-family:var(--font-mono);font-size:0.75rem;color:var(--text-secondary);">
+      干杯！专注饮水提醒杯垫 · 完整功能演示
+    </div>
+  </div>
+</div>
+
+  <!-- 成果图库 -->
+  <div class="block">
+    <div class="block-title">成果展示 / Results</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+      <div style="aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;"><img src="images/main.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div style="aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;"><img src="images/inside.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div style="aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;"><img src="images/red-light.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div style="aspect-ratio:4/3;border-radius:var(--radius);overflow:hidden;"><img src="images/green-light.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+    </div>
+  </div>
+
+  <!-- 未来迭代 -->
+  <div class="block">
+    <div class="block-title">未来迭代方向 / Future</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-left:2px solid var(--primary);border-radius:var(--radius);padding:1.2rem;">
+        <div style="font-family:"Consolas","Courier New",monospace;font-size:0.65rem;color:var(--primary);margin-bottom:0.5rem;">V3.0</div>
+        <div style="font-size:0.88rem;color:var(--text-main);font-weight:500;margin-bottom:0.3rem;">OLED 显示屏</div>
+        <div style="font-size:0.78rem;color:var(--text-secondary);">显示今日喝水次数和上次喝水时间</div>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-left:2px solid var(--primary);border-radius:var(--radius);padding:1.2rem;">
+        <div style="font-family:"Consolas","Courier New",monospace;font-size:0.65rem;color:var(--primary);margin-bottom:0.5rem;">V3.0</div>
+        <div style="font-size:0.88rem;color:var(--text-main);font-weight:500;margin-bottom:0.3rem;">蓝牙推送</div>
+        <div style="font-size:0.78rem;color:var(--text-secondary);">超时后向手机推送饮水提醒通知</div>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-left:2px solid var(--primary);border-radius:var(--radius);padding:1.2rem;">
+        <div style="font-family:"Consolas","Courier New",monospace;font-size:0.65rem;color:var(--primary);margin-bottom:0.5rem;">V4.0</div>
+        <div style="font-size:0.88rem;color:var(--text-main);font-weight:500;margin-bottom:0.3rem;">自适应间隔</div>
+        <div style="font-size:0.78rem;color:var(--text-secondary);">根据用户习惯动态调整提醒时间</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 总结 -->
+  <div class="block">
+    <div class="block-title">总结与反思 / Reflection</div>
+    <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:2rem;">
+      <div style="font-size:0.92rem;color:var(--text-secondary);line-height:2.1;">
+        <p style="margin-bottom:1.2rem;">这个项目最让我骄傲的地方，不是最终做出了什么，而是我们在两天内经历了四个版本的迭代——每一个版本的升级都来自于真实的测试反馈，而不是凭空想象。MVP 的蜂鸣器太吵、V1.5 的次数记录增加成就感、V2.0 的语音提醒更自然、V2.1 的防作弊判定最有创意，这条迭代链清晰地体现了设计思维中"测试→反馈→改进"的循环。</p>
+        <p style="margin-bottom:1.2rem;">防作弊判定（3秒规则）是整个项目我最喜欢的细节。它源于一个很朴素的观察：如果一个装置能被人轻易"欺骗"，那它的核心价值就失去了。我们用3秒时间戳判断这次拿起杯子是真的喝水还是只是重置提醒，这个逻辑很简单，但背后体现了"以用户行为为中心"的设计思考。</p>
+        <p>整个学期最大的收获，是学会了在约束条件下快速迭代——时间有限、材料有限、技术能力有限，但只要方向对了，每一次小的改进都能让产品变得更好。</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid var(--border-gray);">
+    <a href="final-3d.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:0.8rem 1.5rem;color:var(--text-main);font-size:0.875rem;">← 3D建模</a>
+    <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:rgba(22,93,255,0.1);border:1px solid rgba(22,93,255,0.3);border-radius:var(--radius);padding:0.8rem 1.5rem;color:var(--primary);font-size:0.875rem;">↩ 返回日志主页</a>
+  </div>
+</main>
+</body>
+</html>

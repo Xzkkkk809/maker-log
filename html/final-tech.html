@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>技术栈 & 代码 | 干杯！专注饮水提醒杯垫</title>
+<style>
+:root{
+--primary:#165DFF;
+--bg-light:#F5F7FA;
+--card-bg:#FFFFFF;
+--text-main:#1D2129;
+--text-secondary:#4E5969;
+--border-gray:#E5E6EB;
+--border-radius:12px;
+--shadow:0 4px 16px rgba(0,0,0.12);
+}
+*,*::before,*::after{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+body{
+font-family:"Microsoft YaHei",sans-serif;
+background:var(--bg-light);
+color:var(--text-main);
+font-size:16px;
+line-height:1.8;
+}
+.top-nav{
+position:sticky;
+top:0;
+background:#fff;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px 2rem;
+z-index:100;
+}
+.nav-back,.nav-next{
+display:flex;
+align-items:center;
+gap:8px;
+text-decoration:none;
+color:var(--text-secondary);
+font-size:14px;
+transition:color 0.2s;
+}
+.nav-back:hover,.nav-next:hover{
+color:var(--primary);
+}
+.nav-progress{
+display:flex;
+gap:6px;
+}
+.nav-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--border-gray);
+text-decoration:none;
+transition:background 0.2s;
+}
+.nav-dot.active{
+background:var(--primary);
+}
+.main{
+max-width:900px;
+margin:0 auto;
+padding:80px 2rem 4rem;
+}
+.page-eyebrow{
+font-size:13px;
+color:var(--primary);
+letter-spacing:0.2em;
+margin-bottom:0.8rem;
+}
+.page-title{
+font-size:2.2rem;
+font-weight:700;
+color:var(--text-main);
+margin-bottom:1rem;
+}
+.page-desc{
+font-size:0.95rem;
+color:var(--text-secondary);
+max-width:600px;
+line-height:1.9;
+}
+.divider{
+width:40px;
+height:2px;
+background:linear-gradient(90deg,var(--primary),transparent);
+margin:1.5rem 0;
+border-radius:2px;
+}
+.block{
+margin-bottom:3rem;
+}
+.block-title{
+font-size:15px;
+color:var(--primary);
+letter-spacing:0.15em;
+text-transform:uppercase;
+margin-bottom:1.2rem;
+display:flex;
+align-items:center;
+gap:8px;
+}
+.block-title::after{
+content:'';
+flex:1;
+height:1px;
+background:var(--border-gray);
+}
+.tag{
+display:inline-block;
+padding:2px 8px;
+border-radius:4px;
+font-size:12px;
+margin:2px;
+}
+.tag-teal{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,255,0.2);
+}
+.tag-blue{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,0.2);
+}
+.tag-amber{
+background:rgba(255,159,64,0.12);
+color:#f59e0b;
+border:1px solid rgba(255,159,64,0.2);
+}
+.table{
+width:100%;
+border-collapse:collapse;
+font-size:0.875rem;
+}
+.table th{
+text-align:left;
+padding:0.6rem 1rem;
+font-size:0.68rem;
+color:var(--text-secondary);
+letter-spacing:0.1em;
+text-transform:uppercase;
+border-bottom:1px solid var(--border-gray);
+}
+.table td{
+padding:0.8rem 1rem;
+border-bottom:1px solid var(--border-gray);
+color:var(--text-secondary);
+vertical-align:top;
+}
+.table tr:last-child td{
+border-bottom:none;
+}
+.code-block{
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+border-radius:var(--radius);
+overflow:hidden;
+}
+.code-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0.8rem 1.2rem;
+border-bottom:1px solid var(--border-gray);
+}
+.code-lang{
+font-size:0.7rem;
+color:var(--primary);
+}
+.copy-btn{
+font-size:0.7rem;
+color:var(--text-secondary);
+background:var(--bg-light);
+border:none;
+border-radius:4px;
+padding:3px 10px;
+cursor:pointer;
+}
+.copy-btn:hover{
+color:var(--primary);
+}
+.code-body{
+padding:1.2rem;
+overflow-x:auto;
+}
+.code-body pre{
+font-family:"Consolas","Courier New",monospace;
+font-size:0.82rem;
+color:var(--text-secondary);
+}
+.wire-diagram{
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+border-radius:var(--radius);
+padding:1.5rem;
+}
+.wire-item{
+display:flex;
+align-items:center;
+gap:1rem;
+padding:0.6rem 0;
+border-bottom:1px solid var(--border-gray);
+}
+.wire-item:last-child{
+border-bottom:none;
+}
+.wire-pin{
+background:var(--bg-light);
+padding:3px 10px;
+border-radius:4px;
+color:var(--primary);
+min-width:80px;
+text-align:center;
+font-size:0.78rem;
+}
+.wire-line{
+flex:1;
+height:1px;
+border-top:1px dashed var(--border-gray);
+}
+.wire-component{
+font-size:0.82rem;
+color:var(--text-secondary);
+}
+.iter-timeline{
+position:relative;
+padding-left:2rem;
+margin-top:1.5rem;
+}
+.iter-timeline::before{
+content:'';
+position:absolute;
+left:6px;
+top:8px;
+bottom:8px;
+width:1px;
+background:linear-gradient(to bottom,var(--primary),var(--border-gray));
+}
+.iter-item{
+position:relative;
+padding-bottom:2rem;
+}
+.iter-item:last-child{
+padding-bottom:0;
+}
+.iter-item::before{
+content:'';
+position:absolute;
+left:-1.65rem;
+top:8px;
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--primary);
+border:2px solid var(--bg-light);
+}
+.iter-version{
+font-size:0.7rem;
+color:var(--primary);
+margin-bottom:0.3rem;
+}
+.iter-title{
+font-size:0.95rem;
+font-weight:500;
+color:var(--text-main);
+margin-bottom:0.4rem;
+}
+.iter-body{
+font-size:0.875rem;
+color:var(--text-secondary);
+line-height:1.75;
+}
+.state-flow{
+display:flex;
+flex-direction:column;
+gap:8px;
+margin-top:1rem;
+}
+.state-item{
+display:flex;
+align-items:flex-start;
+gap:1rem;
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+border-radius:var(--radius);
+padding:1rem 1.2rem;
+}
+.state-indicator{
+width:12px;
+height:12px;
+border-radius:50%;
+flex-shrink:0;
+margin-top:4px;
+}
+.state-info{}
+.state-name{
+font-size:0.88rem;
+color:var(--text-main);
+font-weight:500;
+margin-bottom:0.2rem;
+}
+.state-desc{
+font-size:0.78rem;
+color:var(--text-secondary);
+line-height:1.6;
+}
+.state-arrow{
+text-align:center;
+color:var(--text-secondary);
+font-size:0.8rem;
+padding:2px 0;
+}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="final-designlog.html" class="nav-back">← 设计过程</a>
+  <div class="nav-progress">
+    <a href="final-profile.html" class="nav-dot"></a>
+    <a href="final-designlog.html" class="nav-dot"></a>
+    <a href="final-tech.html" class="nav-dot active"></a>
+    <a href="final-3d.html" class="nav-dot"></a>
+    <a href="final-reflection.html" class="nav-dot"></a>
+  </div>
+  <a href="final-3d.html" class="nav-next">3D建模 →</a>
+</nav>
+<main class="main">
+  <div style="margin-bottom:2.5rem;">
+    <div class="page-eyebrow">// 03 · Tech Stack & Code</div>
+    <h1 class="page-title">技术栈 & 代码</h1>
+    <p class="page-desc">ESP32-S2 主控 + ASR01 语音模块 + 轻触开关，全程面包板搭建。</p>
+    <div class="divider"></div>
+  </div>
+  <div class="block">
+    <div class="block-title">版本迭代 / Version History</div>
+    <div class="iter-timeline">
+      <div class="iter-item">
+        <div class="iter-version">MVP · V1.0</div>
+        <div class="iter-title">最初版本：超时红灯+蜂鸣器</div>
+        <div class="iter-body">水杯放上杯垫开始计时，超时红灯闪烁+蜂鸣器响。</div>
+      </div>
+      <div class="iter-item">
+        <div class="iter-version">优化 · V1.5</div>
+        <div class="iter-title">加入喝水次数记录</div>
+        <div class="iter-body">绿灯常亮，放下水杯绿灯闪烁=喝水次数。</div>
+      </div>
+      <div class="iter-item">
+        <div class="iter-version">升级 · V2.0</div>
+        <div class="iter-title">加入 ASR01 语音模块</div>
+        <div class="iter-body">串口通信，语音播报"喝水吧"。</div>
+      </div>
+      <div class="iter-item">
+        <div class="iter-version">防作弊 · V2.1</div>
+        <div class="iter-title">3秒防作弊判定</div>
+        <div class="iter-body">拿起>3秒才算有效喝水。</div>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="block-title">最终状态流程</div>
+    <div class="state-flow">
+      <div class="state-item">
+        <div class="state-indicator" style="background:#10b981;"></div>
+        <div class="state-info">
+          <div class="state-name">待机：绿灯常亮</div>
+          <div class="state-desc">水杯放上，开始计时。</div>
+        </div>
+      </div>
+      <div class="state-arrow">→ 8秒后</div>
+      <div class="state-item">
+        <div class="state-indicator" style="background:#f59e0b;"></div>
+        <div class="state-info">
+          <div class="state-name">提醒：红绿交替+语音</div>
+          <div class="state-desc">播报"喝水吧"。</div>
+        </div>
+      </div>
+      <div class="state-arrow">→ 再4秒</div>
+      <div class="state-item">
+        <div class="state-indicator" style="background:#ef4444;"></div>
+        <div class="state-info">
+          <div class="state-name">强提醒：红灯闪烁</div>
+          <div class="state-desc">持续闪烁。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="block-title">硬件清单</div>
+    <table class="table">
+      <thead><tr><th>元件</th><th>型号</th><th>数量</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-teal">ESP32-S2</span></td><td>LOLIN S2 Mini</td><td>×1</td></tr>
+        <tr><td><span class="tag tag-amber">ASR01</span></td><td>语音模块</td><td>×1</td></tr>
+        <tr><td>轻触开关</td><td>并联</td><td>×3</td></tr>
+        <tr><td>红色LED</td><td>220Ω限流</td><td>×3</td></tr>
+        <tr><td>绿色LED</td><td>220Ω限流</td><td>×1</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="block">
+    <div class="block-title">接线说明</div>
+    <div class="wire-diagram">
+      <div class="wire-item">
+        <span class="wire-pin">GPIO2</span>
+        <div class="wire-line"></div>
+        <span class="wire-component">轻触开关 ×3</span>
+      </div>
+      <div class="wire-item">
+        <span class="wire-pin">GPIO9/10/11</span>
+        <div class="wire-line"></div>
+        <span class="wire-component">红灯LED</span>
+      </div>
+      <div class="wire-item">
+        <span class="wire-pin">GPIO12</span>
+        <div class="wire-line"></div>
+        <span class="wire-component">绿灯LED</span>
+      </div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="block-title">核心代码</div>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="code-lang">C++ / ESP32</span>
+        <button class="copy-btn" onclick="this.innerText='已复制'">复制</button>
+      </div>
+      <div class="code-body">
+<pre>
+const int redLED = 2;
+const int greenLED = 9;
+const int button = 5;
+
+unsigned long pressTime = 0;
+
+void setup() {
+  pinMode(redLED, OUTPUT);
+  pinMode(greenLED, OUTPUT);
+  pinMode(button, INPUT_PULLUP);
+  digitalWrite(redLED, LOW);
+  digitalWrite(greenLED, HIGH);
+}
+
+void loop() {
+  if (digitalRead(button) == LOW) {
+    if (pressTime == 0) pressTime = millis();
+    if (millis() - pressTime >= 3000) {
+      digitalWrite(redLED, HIGH);
+      digitalWrite(greenLED, LOW);
+    }
+  } else {
+    pressTime = 0;
+    digitalWrite(redLED, LOW);
+    digitalWrite(greenLED, HIGH);
+  }
+}
+</pre>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border-gray);">
+    <a href="final-designlog.html" class="nav-back">← 设计过程</a>
+    <a href="final-3d.html" class="nav-next">3D建模 →</a>
+  </div>
+</main>
+</body>
+</html>
