@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目简介 & 团队 | 干杯！专注饮水提醒杯垫</title>
+<style>
+:root{
+--primary:#165DFF;
+--bg-light:#F5F7FA;
+--card-bg:#FFFFFF;
+--text-main:#1D2129;
+--text-secondary:#4E5969;
+--border-gray:#E5E6EB;
+--border-radius:12px;
+--shadow:0 4px 16px rgba(0,0,0.12);
+}
+*,*::before,*::after{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+html{
+scroll-behavior:smooth;
+}
+body{
+font-family:"Microsoft YaHei",sans-serif;
+background:var(--bg-light);
+color:var(--text-main);
+font-size:16px;
+line-height:1.8;
+min-height:100vh;
+}
+.top-nav{
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:56px;
+background:#fff;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 2rem;
+z-index:100;
+}
+.nav-back,.nav-next{
+display:flex;
+align-items:center;
+gap:8px;
+text-decoration:none;
+color:var(--text-secondary);
+font-size:14px;
+transition:color 0.2s;
+}
+.nav-back:hover,.nav-next:hover{
+color:var(--primary);
+}
+.nav-progress{
+display:flex;
+gap:6px;
+align-items:center;
+}
+.nav-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--border-gray);
+text-decoration:none;
+transition:background 0.2s;
+}
+.nav-dot.active{
+background:var(--primary);
+}
+.nav-dot:hover{
+background:#c9d8ff;
+}
+.main{
+max-width:900px;
+margin:0 auto;
+padding:80px 2rem 4rem;
+}
+.page-hero{
+margin-bottom:3rem;
+}
+.page-eyebrow{
+font-size:13px;
+color:var(--primary);
+letter-spacing:0.2em;
+text-transform:uppercase;
+margin-bottom:0.8rem;
+}
+.page-title{
+font-size:2.2rem;
+font-weight:700;
+color:var(--text-main);
+line-height:1.2;
+margin-bottom:1rem;
+}
+.page-title span{
+color:var(--primary);
+}
+.page-desc{
+font-size:0.95rem;
+color:var(--text-secondary);
+max-width:600px;
+line-height:1.9;
+}
+.divider{
+width:40px;
+height:2px;
+background:linear-gradient(90deg,var(--primary),transparent);
+margin:1.5rem 0;
+border-radius:2px;
+}
+.block{
+margin-bottom:3rem;
+animation:fadeUp 0.5s ease both;
+}
+.block:nth-child(2){
+animation-delay:0.1s;
+}
+.block:nth-child(3){
+animation-delay:0.2s;
+}
+.block:nth-child(4){
+animation-delay:0.3s;
+}
+.block-title{
+font-size:15px;
+color:var(--primary);
+letter-spacing:0.15em;
+text-transform:uppercase;
+margin-bottom:1.2rem;
+display:flex;
+align-items:center;
+gap:8px;
+}
+.block-title::after{
+content:'';
+flex:1;
+height:1px;
+background:var(--border-gray);
+}
+.card-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:12px;
+}
+.info-card{
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+border-radius:var(--radius);
+padding:1.2rem;
+}
+.card-label{
+font-size:0.7rem;
+color:var(--text-secondary);
+letter-spacing:0.1em;
+text-transform:uppercase;
+margin-bottom:0.5rem;
+}
+.card-value{
+font-size:0.95rem;
+color:var(--text-main);
+font-weight:500;
+}
+.table{
+width:100%;
+border-collapse:collapse;
+font-size:0.875rem;
+}
+.table th{
+text-align:left;
+padding:0.6rem 1rem;
+font-size:0.68rem;
+color:var(--text-secondary);
+letter-spacing:0.1em;
+text-transform:uppercase;
+border-bottom:1px solid var(--border-gray);
+}
+.table td{
+padding:0.8rem 1rem;
+border-bottom:1px solid var(--border-gray);
+color:var(--text-secondary);
+vertical-align:top;
+}
+.table tr:last-child td{
+border-bottom:none;
+}
+.table tr:hover td{
+background:#fafbfc;
+}
+.tag{
+display:inline-block;
+padding:2px 8px;
+border-radius:4px;
+font-size:0.7rem;
+margin:2px;
+}
+.tag-teal{
+background:rgba(22,93,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,255,0.2);
+}
+.tag-blue{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,255,0.2);
+}
+.tag-amber{
+background:rgba(255,159,64,0.12);
+color:#f59e0b;
+border:1px solid rgba(255,159,64,0.2);
+}
+.tag-pink{
+background:rgba(246,135,179,0.12);
+color:#ec4899;
+border:1px solid rgba(246,135,179,0.2);
+}
+.hmw-box{
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+border-left:3px solid var(--primary);
+border-radius:0 var(--radius) var(--radius) 0;
+padding:1.5rem 2rem;
+font-family:"SimSun","STSong",serif;
+font-size:1.05rem;
+color:var(--text-main);
+line-height:1.8;
+}
+.member-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:14px;
+}
+.member-card{
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+border-radius:var(--radius);
+padding:1.3rem;
+transition:border-color 0.2s;
+}
+.member-card:hover{
+border-color:#c9d8ff;
+}
+.member-avatar{
+width:48px;
+height:48px;
+border-radius:50%;
+background:var(--bg-light);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:1.2rem;
+margin-bottom:0.8rem;
+}
+.member-name{
+font-size:0.95rem;
+color:var(--text-main);
+font-weight:500;
+margin-bottom:0.3rem;
+}
+.member-id{
+font-family:"Consolas","Courier New",monospace;
+font-size:0.7rem;
+color:var(--text-secondary);
+margin-bottom:0.6rem;
+}
+.member-role{
+font-size:0.78rem;
+color:var(--text-secondary);
+line-height:1.6;
+}
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(16px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a href="index.html" class="nav-back">← 返回日志主页</a>
+  <div class="nav-progress">
+    <a href="final-profile.html" class="nav-dot active" title="01 项目简介"></a>
+    <a href="final-designlog.html" class="nav-dot" title="02 设计过程"></a>
+    <a href="final-tech.html" class="nav-dot" title="03 技术栈"></a>
+    <a href="final-3d.html" class="nav-dot" title="04 3D建模"></a>
+    <a href="final-reflection.html" class="nav-dot" title="05 反思"></a>
+  </div>
+  <a href="final-designlog.html" class="nav-next">设计过程 →</a>
+</nav>
+
+<main class="main">
+  <div class="page-hero">
+    <div class="page-eyebrow">// 01 · Project Profile</div>
+    <h1 class="page-title">项目简介<span> & </span>团队介绍</h1>
+    <p class="page-desc">从一个真实痛点出发，经过多次迭代优化，到一款集语音提醒、防作弊判定、喝水次数记录于一体的智能杯垫。</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 项目概览 -->
+  <div class="block">
+    <div class="block-title">项目概览 / Overview</div>
+    <div class="card-grid">
+      <div class="info-card">
+        <div class="card-label">项目名称</div>
+        <div class="card-value" style="font-family:'SimSun','STSong',serif;">干杯！专注饮水提醒杯垫</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">小组名称</div>
+        <div class="card-value">干杯小队</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">目标用户</div>
+        <div class="card-value" style="font-size:0.85rem;color:var(--text-secondary);">图书馆/自习室长时间学习的大学生</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">核心场景</div>
+        <div class="card-value" style="font-size:0.85rem;color:var(--text-secondary);">专注自习时无意识忽略饮水需求</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">制作周期</div>
+        <div class="card-value">2 天</div>
+      </div>
+      <div class="info-card">
+        <div class="card-label">最终版本亮点</div>
+        <div class="card-value" style="font-size:0.85rem;color:var(--text-secondary);">语音提醒 + 防作弊判定 + 喝水次数记录</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HMW -->
+  <div class="block">
+    <div class="block-title">设计挑战 / HMW</div>
+    <div class="hmw-box">
+      "我们如何能够让长时间专注学习的学生，更容易注意到自己该喝水了？"
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:10px;flex-wrap:wrap;">
+      <span class="tag tag-teal">超过一定时间未喝水</span>
+      <span class="tag tag-blue">无明显提醒机制</span>
+      <span class="tag tag-amber">影响健康和专注力</span>
+      <span class="tag tag-pink">传统方法依赖主动记忆</span>
+    </div>
+  </div>
+
+  <!-- 最终系统逻辑 -->
+  <div class="block">
+    <div class="block-title">最终系统逻辑 / System Logic</div>
+    <table class="table">
+      <thead><tr><th>模块</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--text-main);font-weight:500;">输入感知</td><td>杯垫内轻触开关（× 3 并联）：杯在 → LOW，杯走 → HIGH</td></tr>
+        <tr><td style="color:var(--text-main);font-weight:500;">待机状态</td><td>绿灯常亮；每次放下水杯，绿灯闪烁次数 = 今日已喝水次数</td></tr>
+        <tr><td style="color:var(--text-main);font-weight:500;">轻度提醒</td><td>超过 8 秒未拿起：红绿灯交替闪烁 + ASR01 语音播报"喝水吧"</td></tr>
+        <tr><td style="color:var(--text-main);font-weight:500;">强烈提醒</td><td>再过 4 秒仍未拿起：纯红灯持续闪烁</td></tr>
+        <tr><td style="color:var(--text-main);font-weight:500;">防作弊判定</td><td>拿起水杯后必须超过 3 秒再放回才算有效；3 秒内放回视为无效，红灯继续</td></tr>
+        <tr><td style="color:var(--text-main);font-weight:500;">语音模块</td><td>ASR01 通过串口与 ESP32-S2 交互，外接喇叭播报语音提醒</td></tr>
+        <tr><td style="color:var(--text-main);font-weight:500;">演示模式</td><td>计时阈值缩短，现场实时演示完整流程</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 团队分工 -->
+  <div class="block">
+    <div class="block-title">团队介绍 / Team</div>
+    <div class="member-grid">
+      <div class="member-card">
+        <div class="member-avatar">🎨</div>
+        <div class="member-name">叶锦轩</div>
+        <div class="member-id">2025112340</div>
+        <div><span class="tag tag-teal">结构与制造</span></div>
+        <div class="member-role" style="margin-top:0.6rem;">SolidWorks 建模 · 3D 打印三层圆形外壳 · HTML 日志</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">💻</div>
+        <div class="member-name">朱梓轩</div>
+        <div class="member-id">2025112332</div>
+        <div><span class="tag tag-blue">程序与嵌入式</span></div>
+        <div class="member-role" style="margin-top:0.6rem;">ESP32 代码逻辑 · 状态机 · ASR01 串口通信</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">🔧</div>
+        <div class="member-name">黄上校</div>
+        <div class="member-id">【填写学号】</div>
+        <div><span class="tag tag-amber">硬件与电路</span></div>
+        <div class="member-role" style="margin-top:0.6rem;">轻触开关接线 · LED 连接 · ASR01 模块接入</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">📋</div>
+        <div class="member-name">徐志康</div>
+        <div class="member-id">【填写学号】</div>
+        <div><span class="tag tag-pink">展示与测试</span></div>
+        <div class="member-role" style="margin-top:0.6rem;">展示脚本编写 · 多轮稳定性测试 · 演示排练</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div style="display:flex;justify-content:flex-end;padding-top:2rem;border-top:1px solid var(--border-gray);">
+    <a href="final-designlog.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:0.8rem 1.5rem;color:var(--text-main);font-size:0.875rem;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-gray)'">
+      下一章：设计思维过程 →
+    </a>
+  </div>
+</main>
+</body>
+</html>

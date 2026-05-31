@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计思维过程 | 干杯！专注饮水提醒杯垫</title>
+<style>
+:root{
+--primary:#165DFF;
+--bg-light:#F5F7FA;
+--card-bg:#FFFFFF;
+--text-main:#1D2129;
+--text-secondary:#4E5969;
+--border-gray:#E5E6EB;
+--border-radius:12px;
+--shadow:0 4px 16px rgba(0,0,0.12);
+}
+*,*::before,*::after{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+body{
+font-family:"Microsoft YaHei",sans-serif;
+background:var(--bg-light);
+color:var(--text-main);
+font-size:16px;
+line-height:1.8;
+}
+.top-nav{
+position:sticky;
+top:0;
+background:#fff;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:12px 2rem;
+z-index:100;
+}
+.nav-back,.nav-next{
+display:flex;
+align-items:center;
+gap:8px;
+text-decoration:none;
+color:var(--text-secondary);
+font-size:14px;
+transition:color 0.2s;
+}
+.nav-back:hover,.nav-next:hover{
+color:var(--primary);
+}
+.nav-progress{
+display:flex;
+gap:6px;
+}
+.nav-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--border-gray);
+text-decoration:none;
+transition:background 0.2s;
+}
+.nav-dot.active{
+background:var(--primary);
+}
+.main{
+max-width:900px;
+margin:0 auto;
+padding:80px 2rem 4rem;
+}
+.page-eyebrow{
+font-size:13px;
+color:var(--primary);
+letter-spacing:0.2em;
+margin-bottom:0.8rem;
+}
+.page-title{
+font-size:2.2rem;
+font-weight:700;
+color:var(--text-main);
+margin-bottom:1rem;
+}
+.page-desc{
+font-size:0.95rem;
+color:var(--text-secondary);
+max-width:600px;
+line-height:1.9;
+}
+.divider{
+width:40px;
+height:2px;
+background:linear-gradient(90deg,var(--primary),transparent);
+margin:1.5rem 0;
+border-radius:2px;
+}
+.block{
+margin-bottom:3rem;
+}
+.block-title{
+font-size:15px;
+color:var(--primary);
+letter-spacing:0.15em;
+text-transform:uppercase;
+margin-bottom:1.2rem;
+display:flex;
+align-items:center;
+gap:8px;
+}
+.block-title::after{
+content:'';
+flex:1;
+height:1px;
+background:var(--border-gray);
+}
+.tag{
+display:inline-block;
+padding:2px 8px;
+border-radius:4px;
+font-size:12px;
+margin:2px;
+}
+.tag-teal{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,255,0.2);
+}
+.tag-blue{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,255,0.2);
+}
+.tag-amber{
+background:rgba(255,159,64,0.12);
+color:#f59e0b;
+border:1px solid rgba(255,159,64,0.2);
+}
+.tag-pink{
+background:rgba(246,135,179,0.12);
+color:#ec4899;
+border:1px solid rgba(246,135,179,0.2);
+}
+.table{
+width:100%;
+border-collapse:collapse;
+font-size:0.875rem;
+}
+.table th{
+text-align:left;
+padding:0.6rem 1rem;
+font-size:0.68rem;
+color:var(--text-secondary);
+letter-spacing:0.1em;
+text-transform:uppercase;
+border-bottom:1px solid var(--border-gray);
+}
+.table td{
+padding:0.8rem 1rem;
+border-bottom:1px solid var(--border-gray);
+color:var(--text-secondary);
+vertical-align:top;
+}
+.table tr:last-child td{
+border-bottom:none;
+}
+.table tr:hover td{
+background:#fafbfc;
+}
+/* 折叠卡片 */
+.accordion{
+border:1px solid var(--border-gray);
+border-radius:var(--radius);
+overflow:hidden;
+margin-bottom:10px;
+}
+.accordion-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:1rem 1.2rem;
+background:var(--card-bg);
+cursor:pointer;
+transition:background 0.2s;
+user-select:none;
+}
+.accordion-header:hover{
+background:#fafbfc;
+}
+.accordion-header-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+.accordion-step{
+font-family:"Consolas","Courier New",monospace;
+font-size:0.65rem;
+color:var(--primary);
+letter-spacing:0.1em;
+}
+.accordion-title{
+font-size:0.95rem;
+color:var(--text-main);
+font-weight:500;
+}
+.accordion-arrow{
+font-family:"Consolas","Courier New",monospace;
+font-size:0.8rem;
+color:var(--text-secondary);
+transition:transform 0.3s;
+}
+.accordion-arrow.open{
+transform:rotate(90deg);
+}
+.accordion-body{
+max-height:0;
+overflow:hidden;
+transition:max-height 0.4s ease;
+}
+.accordion-body.open{
+max-height:2000px;
+}
+.accordion-content{
+padding:1.2rem;
+border-top:1px solid var(--border-gray);
+background:var(--card-bg);
+}
+/* 选择矩阵 */
+.matrix-bar{
+height:6px;
+background:var(--border-gray);
+border-radius:3px;
+overflow:hidden;
+margin-top:4px;
+}
+.matrix-fill{
+height:100%;
+border-radius:3px;
+background:linear-gradient(90deg,var(--primary),#4080FF);
+transition:width 0.8s ease;
+}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="final-profile.html" class="nav-back">← 项目简介</a>
+  <div class="nav-progress">
+    <a href="final-profile.html" class="nav-dot"></a>
+    <a href="final-designlog.html" class="nav-dot active"></a>
+    <a href="final-tech.html" class="nav-dot"></a>
+    <a href="final-3d.html" class="nav-dot"></a>
+    <a href="final-reflection.html" class="nav-dot"></a>
+  </div>
+  <a href="final-tech.html" class="nav-next">技术栈 →</a>
+</nav>
+
+<main class="main">
+  <div style="margin-bottom:2.5rem;">
+    <div class="page-eyebrow">// 02 · Design Log</div>
+    <h1 class="page-title">设计思维完整过程</h1>
+    <p class="page-desc">从同理心出发，经过定义、发散、原型、测试五个阶段，完整记录本项目的设计决策过程。</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 活动一：用户场景 -->
+  <div class="block">
+    <div class="block-title">活动一 · 用户—场景—问题表</div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggle(this)">
+        <div class="accordion-header-left">
+          <span class="accordion-step">EMPATHIZE</span>
+          <span class="accordion-title">8个用户场景分析</span>
+        </div>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <table class="table">
+            <thead><tr><th>#</th><th>用户</th><th>场景</th><th>具体问题</th><th>适合原型</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>自习学生</td><td>图书馆长时间学习</td><td>太专注忘记喝水，影响注意力和健康</td><td><span class="tag tag-teal">✓ 是</span></td></tr>
+              <tr><td>2</td><td>宿舍同学</td><td>夜间熄灯后起床</td><td>开灯影响室友，不开灯容易撞到东西</td><td><span class="tag tag-teal">✓ 是</span></td></tr>
+              <tr><td>3</td><td>做项目的学生</td><td>实验室制作过程中</td><td>小零件乱放，找工具浪费时间</td><td><span class="tag tag-teal">✓ 是</span></td></tr>
+              <tr><td>4</td><td>食堂用餐者</td><td>高峰期排队打饭</td><td>不知道哪个窗口等待时间更短</td><td><span class="tag" style="background:rgba(252,129,0.12);color:#fc8181;border:1px solid rgba(252,129,0.2);">✗ 否</span></td></tr>
+              <tr><td>5</td><td>养植物的同学</td><td>日常照顾桌面盆栽</td><td>经常忘记浇水，发现时植物已枯萎</td><td><span class="tag tag-teal">✓ 是</span></td></tr>
+              <tr><td>6</td><td>久坐自习的学生</td><td>图书馆长时间自习</td><td>长时间同一姿势，颈椎易受损</td><td><span class="tag tag-teal">✓ 是</span></td></tr>
+              <tr><td>7</td><td>焊接操作的学生</td><td>实验室焊接时</td><td>焊接烟雾不易察觉，有害健康</td><td><span class="tag tag-teal">✓ 是</span></td></tr>
+              <tr><td>8</td><td>图书馆自习学生</td><td>长时间专注学习</td><td>超过一小时未喝水，忘记补水</td><td><span class="tag tag-teal">✓ 是</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活动二：HMW -->
+  <div class="block">
+    <div class="block-title">活动二 · HMW 改写</div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggle(this)">
+        <div class="accordion-header-left">
+          <span class="accordion-step">DEFINE</span>
+          <span class="accordion-title">将痛点转化为设计机会</span>
+        </div>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <table class="table">
+            <thead><tr><th>原始问题</th><th>HMW 设计挑战</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>自习学生专注学习时长时间忘记喝水，影响健康和专注力</td>
+                <td style="color:var(--primary);">我们如何能够让长时间专注学习的学生更容易注意到自己该喝水了？</td>
+              </tr>
+              <tr>
+                <td>做项目的学生工具乱放，制作中找工具浪费大量时间</td>
+                <td style="color:#4080FF;">我们如何能够让常用工具更容易被放回固定位置，从而减少寻找时间？</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活动三：创意发散 -->
+  <div class="block">
+    <div class="block-title">活动三 · 创意发散表</div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggle(this)">
+        <div class="accordion-header-left">
+          <span class="accordion-step">IDEATE</span>
+          <span class="accordion-title">5个创意方案</span>
+        </div>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <table class="table">
+            <thead><tr><th>方案名称</th><th>触发条件</th><th>装置反应</th><th>需要材料</th><th>可行</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--primary);font-weight:500;">智能饮水提醒杯垫 ⭐</td><td>水杯超时未被拿起</td><td>红灯+蜂鸣器；放回后绿灯+音效</td><td>Arduino+开关+LED+蜂鸣器</td><td><span class="tag tag-teal">✓</span></td></tr>
+              <tr><td>桌面工具归位提醒器</td><td>工具离开固定位置</td><td>对应LED亮起，归位后消失</td><td>Arduino+磁簧开关+LED</td><td><span class="tag tag-teal">✓</span></td></tr>
+              <tr><td>夜间低扰动导航灯</td><td>夜间有人下床</td><td>低亮度暖色LED灯带自动亮起</td><td>Arduino+PIR+LED灯带</td><td><span class="tag tag-teal">✓</span></td></tr>
+              <tr><td>植物缺水提醒装置</td><td>土壤湿度低于阈值</td><td>红灯+蜂鸣器提醒</td><td>Arduino+土壤湿度传感器+LED</td><td><span class="tag tag-teal">✓</span></td></tr>
+              <tr><td>久坐起身提醒装置</td><td>坐满设定时长未起身</td><td>震动+红灯闪烁</td><td>Arduino+压力传感器+震动马达</td><td><span class="tag tag-teal">✓</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活动四：选择矩阵 -->
+  <div class="block">
+    <div class="block-title">活动四 · 选择矩阵</div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggle(this)">
+        <div class="accordion-header-left">
+          <span class="accordion-step">IDEATE → PROTOTYPE</span>
+          <span class="accordion-title">六维度评分，智能杯垫21分胜出</span>
+        </div>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <div style="display:grid;gap:1rem;">
+            <!-- 方案A -->
+            <div style="background:rgba(22,93,255,0.08);border-radius:var(--radius);padding:1.2rem;border:1px solid rgba(22,93,255,0.2);">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+                <span style="color:var(--primary);font-weight:500;font-size:0.9rem;">方案A：智能饮水提醒杯垫</span>
+                <span style="font-family:"Consolas","Courier New",monospace;font-size:1.1rem;color:var(--primary);font-weight:700;">21分 🏆</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:0.78rem;">
+                <div><div style="color:var(--text-secondary);margin-bottom:3px;">用户价值</div><div class="matrix-bar"><div class="matrix-fill" style="width:80%;"></div></div><div style="color:var(--text-secondary);margin-top:2px;">4/5</div></div>
+                <div><div style="color:var(--text-secondary);margin-bottom:3px;">技术可行</div><div class="matrix-bar"><div class="matrix-fill" style="width:100%;"></div></div><div style="color:var(--text-secondary);margin-top:2px;">5/5</div></div>
+                <div><div style="color:var(--text-secondary);margin-bottom:3px;">展示效果</div><div class="matrix-bar"><div class="matrix-fill" style="width:100%;"></div></div><div style="color:var(--text-secondary);margin-top:2px;">5/5</div></div>
+                <div><div style="color:var(--text-secondary);margin-bottom:3px;">材料可得</div><div class="matrix-bar"><div class="matrix-fill" style="width:100%;"></div></div><div style="color:var(--text-secondary);margin-top:2px;">5/5</div></div>
+                <div><div style="color:var(--text-secondary);margin-bottom:3px;">团队匹配</div><div class="matrix-bar"><div class="matrix-fill" style="width:80%;"></div></div><div style="color:var(--text-secondary);margin-top:2px;">4/5</div></div>
+                <div><div style="color:var(--text-secondary);margin-bottom:3px;">风险程度</div><div class="matrix-bar"><div class="matrix-fill" style="width:40%;background:linear-gradient(90deg,#fc8181,#f687b3);"></div></div><div style="color:var(--text-secondary);margin-top:2px;">2/5（低风险）</div></div>
+              </div>
+            </div>
+            <!-- 方案B -->
+            <div style="background:var(--card-bg);border-radius:var(--radius);padding:1.2rem;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                <span style="color:var(--text-secondary);font-size:0.9rem;">方案B：桌面工具归位提醒</span>
+                <span style="font-family:"Consolas","Courier New",monospace;color:var(--text-secondary);">14分</span>
+              </div>
+            </div>
+            <div style="background:var(--card-bg);border-radius:var(--radius);padding:1.2rem;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;">
+                <span style="color:var(--text-secondary);font-size:0.9rem;">方案C：植物缺水提醒装置</span>
+                <span style="font-family:"Consolas","Courier New",monospace;color:var(--text-secondary);">15分</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 活动五：MVP -->
+  <div class="block">
+    <div class="block-title">活动五 · MVP 定义表</div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggle(this)">
+        <div class="accordion-header-left">
+          <span class="accordion-step">PROTOTYPE</span>
+          <span class="accordion-title">最小可演示版本定义</span>
+        </div>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <table class="table">
+            <thead><tr><th>问题</th><th>答案</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--text-main);">核心用户</td><td>图书馆和自习室长时间学习的大学生</td></tr>
+              <tr><td style="color:var(--text-main);">核心场景</td><td>专注自习时不知不觉忘记喝水</td></tr>
+              <tr><td style="color:var(--text-main);">具体问题</td><td>超过1小时不喝水，无明显提醒，影响健康和专注力</td></tr>
+              <tr><td style="color:var(--text-main);">唯一核心功能</td><td>超时后红灯狂闪+蜂鸣器响，喝水放回后绿灯+干杯音效奖励</td></tr>
+              <tr><td style="color:var(--text-main);">感知方式</td><td>杯垫内轻触开关：杯在为 LOW，拿走为 HIGH</td></tr>
+              <tr><td style="color:var(--text-main);">程序判断</td><td>Arduino 计时，超过 60 分钟（演示用1分钟）触发提醒</td></tr>
+              <tr><td style="color:var(--text-main);">演示方式</td><td>计时阈值设1分钟，现场等待→灯亮→拿起放回→展示绿灯奖励</td></tr>
+              <tr><td style="color:var(--text-main);">最大风险</td><td>轻触开关被水杯持续压坏，导致状态检测失误</td></tr>
+              <tr><td style="color:var(--text-main);">备用方案</td><td>若开关故障，改用按钮手动模拟放杯/取杯，逻辑完全相同</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 两天计划 -->
+  <div class="block">
+    <div class="block-title">活动六 · 两天制作计划</div>
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggle(this)">
+        <div class="accordion-header-left">
+          <span class="accordion-step">TEST</span>
+          <span class="accordion-title">详细时间节点安排</span>
+        </div>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <table class="table">
+            <thead><tr><th>时间</th><th>任务</th><th>负责人</th><th>完成标准</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--primary);font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第1天上午</td><td>确认分工，领取材料，提交激光切割文件</td><td>全组</td><td>每人清楚任务，切割文件已提交</td></tr>
+              <tr><td style="color:var(--primary);font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第1天上午</td><td>接线+写代码，串口能读出开关状态</td><td>硬件+程序</td><td>Serial Monitor 显示 cup on/off</td></tr>
+              <tr><td style="color:var(--primary);font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第1天下午</td><td>集成：灯光+蜂鸣器+计时联调完成</td><td>全组</td><td>完整闭环：等待→灯闪→拿放→音效</td></tr>
+              <tr><td style="color:var(--primary);font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第1天下午</td><td>安装外壳，整理线材，排练展示脚本</td><td>结构+展示</td><td>封装好，能完整演示一遍</td></tr>
+              <tr><td style="color:#4080FF;font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第2天上午</td><td>修复遗留问题，优化交互细节</td><td>程序+硬件</td><td>演示无报错</td></tr>
+              <tr><td style="color:#4080FF;font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第2天上午</td><td>外观收尾，走线美化，焊接加固</td><td>结构</td><td>外壳整洁，元件固定牢固</td></tr>
+              <tr><td style="color:#4080FF;font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第2天下午</td><td>多轮测试，准备脚本和演示道具</td><td>展示+测试</td><td>稳定演示5次以上</td></tr>
+              <tr><td style="color:#4080FF;font-family:"Consolas","Courier New",monospace;font-size:0.8rem;">第2天下午</td><td>彩排展示，备用方案就绪，最终调整</td><td>全组</td><td>全员试讲一遍</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border-gray);">
+    <a href="final-profile.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:0.8rem 1.5rem;color:var(--text-main);font-size:0.875rem;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-gray)'">← 项目简介</a>
+    <a href="final-tech.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:0.8rem 1.5rem;color:var(--text-main);font-size:0.875rem;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-gray)'">技术栈 →</a>
+  </div>
+</main>
+
+<script>
+function toggle(header){
+  const arrow=header.querySelector('.accordion-arrow');
+  const body=header.nextElementSibling;
+  arrow.classList.toggle('open');
+  body.classList.toggle('open');
+}
+</script>
+</body>
+</html>

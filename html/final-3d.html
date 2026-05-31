@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D建模 & 制造 | 干杯！专注饮水提醒杯垫</title>
+<style>
+:root{
+--primary:#165DFF;
+--bg-light:#F5F7FA;
+--card-bg:#FFFFFF;
+--text-main:#1D2129;
+--text-secondary:#4E5969;
+--border-gray:#E5E6EB;
+--border-radius:12px;
+--shadow:0 4px 16px rgba(0,0,0,0.12);
+}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+body{
+font-family:"Microsoft YaHei",sans-serif;
+background:var(--bg-light);
+color:var(--text-main);
+font-size:16px;
+line-height:1.8;
+min-height:100vh;
+}
+.top-nav{
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:56px;
+background:#fff;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 2rem;
+z-index:100;
+}
+.nav-back,.nav-next{
+display:flex;
+align-items:center;
+gap:8px;
+text-decoration:none;
+color:var(--text-secondary);
+font-size:14px;
+transition:color 0.2s;
+}
+.nav-back:hover,.nav-next:hover{
+color:var(--primary);
+}
+.nav-progress{
+display:flex;
+gap:6px;
+}
+.nav-dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:var(--border-gray);
+text-decoration:none;
+transition:background 0.2s;
+}
+.nav-dot.active{
+background:var(--primary);
+}
+.main{
+max-width:900px;
+margin:0 auto;
+padding:80px 2rem 4rem;
+}
+.page-eyebrow{
+font-size:13px;
+color:var(--primary);
+letter-spacing:0.2em;
+margin-bottom:0.8rem;
+}
+.page-title{
+font-size:2.2rem;
+font-weight:700;
+color:var(--text-main);
+margin-bottom:1rem;
+}
+.divider{
+width:40px;
+height:2px;
+background:linear-gradient(90deg,var(--primary),transparent);
+margin:1.5rem 0;
+border-radius:2px;
+}
+.block{
+margin-bottom:3rem;
+}
+.block-title{
+font-size:15px;
+color:var(--primary);
+letter-spacing:0.15em;
+text-transform:uppercase;
+margin-bottom:1.2rem;
+display:flex;
+align-items:center;
+gap:8px;
+}
+.block-title::after{
+content:'';
+flex:1;
+height:1px;
+background:var(--border-gray);
+}
+.tag{
+display:inline-block;
+padding:2px 8px;
+border-radius:4px;
+font-size:12px;
+margin:2px;
+}
+.tag-teal{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,255,0.2);
+}
+.tag-blue{
+background:rgba(22,93,255,0.12);
+color:var(--primary);
+border:1px solid rgba(22,93,0.2);
+}
+.tag-amber{
+background:rgba(255,159,64,0.12);
+color:#f59e0b;
+border:1px solid rgba(255,159,64,0.2);
+}
+.table{
+width:100%;
+border-collapse:collapse;
+font-size:0.875rem;
+}
+.table th{
+text-align:left;
+padding:0.6rem 1rem;
+font-size:0.68rem;
+color:var(--text-secondary);
+letter-spacing:0.1em;
+border-bottom:1px solid var(--border-gray);
+}
+.table td{
+padding:0.8rem 1rem;
+border-bottom:1px solid var(--border-gray);
+color:var(--text-secondary);
+vertical-align:top;
+}
+.table tr:last-child td{
+border-bottom:none;
+}
+/* 三层结构卡片 */
+.layer-cards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+}
+.layer-card{
+background:var(--card-bg);
+border:1px solid var(--border-gray);
+border-radius:var(--radius);
+padding:1.3rem;
+transition:all 0.25s;
+cursor:default;
+}
+.layer-card:hover{
+transform:translateY(-4px);
+box-shadow:0 8px 24px rgba(0,0,0,0.1);
+}
+.layer-num{
+font-size:0.65rem;
+color:var(--text-secondary);
+letter-spacing:0.1em;
+margin-bottom:0.5rem;
+}
+.layer-name{
+font-size:1rem;
+color:var(--text-main);
+font-weight:500;
+margin-bottom:0.8rem;
+}
+.layer-change{
+font-size:0.78rem;
+color:var(--text-secondary);
+line-height:1.7;
+margin-bottom:0.8rem;
+}
+.change-badge{
+display:inline-flex;
+align-items:center;
+gap:4px;
+font-size:0.68rem;
+padding:2px 8px;
+border-radius:4px;
+margin:2px 2px 2px 0;
+}
+.badge-red{
+background:rgba(252,129,129,0.1);
+color:#fc8181;
+border:1px solid rgba(252,129,129,0.2);
+}
+.badge-green{
+background:rgba(104,211,145,0.1);
+color:#10b981;
+border:1px solid rgba(104,211,145,0.2);
+}
+/* 图片格 */
+.img-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:12px;
+}
+.img-item{
+aspect-ratio:4/3;
+background:var(--card-bg);
+border:1px dashed var(--border-gray);
+border-radius:var(--radius);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:8px;
+overflow:hidden;
+cursor:pointer;
+transition:all 0.25s;
+}
+.img-item:hover{
+border-color:var(--primary);
+}
+.img-item img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+.img-placeholder-icon{
+font-size:1.5rem;
+color:var(--text-secondary);
+}
+.img-placeholder-text{
+font-size:0.75rem;
+color:var(--text-secondary);
+}
+/* 灯箱 */
+.lightbox{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.9);
+z-index:1000;
+align-items:center;
+justify-content:center;
+}
+.lightbox.show{
+display:flex;
+}
+.lightbox img{
+max-width:90vw;
+max-height:90vh;
+border-radius:var(--radius);
+}
+.lightbox-close{
+position:fixed;
+top:1.5rem;
+right:1.5rem;
+font-size:1.5rem;
+color:#fff;
+cursor:pointer;
+background:rgba(255,255,255,0.2);
+border:none;
+border-radius:50%;
+width:40px;
+height:40px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="final-tech.html" class="nav-back">← 技术栈</a>
+  <div class="nav-progress">
+    <a href="final-profile.html" class="nav-dot"></a>
+    <a href="final-designlog.html" class="nav-dot"></a>
+    <a href="final-tech.html" class="nav-dot"></a>
+    <a href="final-3d.html" class="nav-dot active"></a>
+    <a href="final-reflection.html" class="nav-dot"></a>
+  </div>
+  <a href="final-reflection.html" class="nav-next">反思 →</a>
+</nav>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<main class="main">
+  <div style="margin-bottom:2.5rem;">
+    <div class="page-eyebrow">// 04 · 3D Design & Manufacturing</div>
+    <h1 class="page-title">3D 建模 & 制造</h1>
+    <p style="color:var(--text-secondary);font-size:0.95rem;max-width:600px;line-height:1.9;">三层圆形叠加结构，根据实际电路尺寸反向修改模型。PLA 打印，层高 0.2mm，填充率 15%。</p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 三层结构 -->
+  <div class="block">
+    <div class="block-title">三层外壳结构 / Layer Structure</div>
+    <div class="layer-cards">
+      <div class="layer-card" style="border-top:2px solid var(--primary);">
+        <div class="layer-num">LAYER 01 · TOP</div>
+        <div class="layer-name">顶层</div>
+        <div class="layer-change">放置水杯的顶面，中心对应开关位置。</div>
+        <div><span class="change-badge badge-red">高度 19.5→32mm</span></div>
+        <div><span class="change-badge badge-red">USB缺口 13×7mm</span></div>
+      </div>
+      <div class="layer-card" style="border-top:2px solid var(--primary);">
+        <div class="layer-num">LAYER 02 · UPPER</div>
+        <div class="layer-name">中层</div>
+        <div class="layer-change">安装各传感器和输出元件的开孔层。</div>
+        <div><span class="change-badge badge-red">开关方孔 15×15mm</span></div>
+        <div><span class="change-badge badge-red">红LED孔 Ø6mm ×3</span></div>
+        <div><span class="change-badge badge-red">绿LED+蜂鸣器孔</span></div>
+      </div>
+      <div class="layer-card" style="border-top:2px solid #f59e0b;">
+        <div class="layer-num">LAYER 03 · LOWER</div>
+        <div class="layer-name">底层</div>
+        <div class="layer-change">杯垫底板，稳定支撑整体结构，无需修改。</div>
+        <div><span class="change-badge badge-green">原文件直接使用</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 改动对比 -->
+  <div class="block">
+    <div class="block-title">关键改动说明 / Key Changes</div>
+    <table class="table">
+      <thead><tr><th>零件</th><th>参数</th><th>改动前</th><th>改动后</th><th>原因</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-teal">顶层</span></td><td>高度</td><td style="color:#fc8181;">19.5mm</td><td style="color:#10b981;">32mm</td><td>容纳 Arduino + 面包板 + 走线</td></tr>
+        <tr><td><span class="tag tag-teal">顶层</span></td><td>USB 缺口</td><td style="color:#fc8181;">无</td><td style="color:#10b981;">13×7mm</td><td>方便接电脑烧程序</td></tr>
+        <tr><td><span class="tag tag-blue">中层</span></td><td>中心方孔</td><td style="color:#fc8181;">无</td><td style="color:#10b981;">15×15mm</td><td>轻触开关安装位</td></tr>
+        <tr><td><span class="tag tag-blue">中层</span></td><td>红 LED 孔</td><td style="color:#fc8181;">无</td><td style="color:#10b981;">Ø6mm × 3</td><td>左侧三个透光孔</td></tr>
+        <tr><td><span class="tag tag-blue">中层</span></td><td>绿 LED 孔</td><td style="color:#fc8181;">无</td><td style="color:#10b981;">Ø6mm × 1</td><td>右侧奖励灯透光</td></tr>
+        <tr><td><span class="tag tag-blue">中层</span></td><td>蜂鸣器孔</td><td style="color:#fc8181;">无</td><td style="color:#10b981;">Ø8mm × 1</td><td>出声孔</td></tr>
+        <tr><td><span class="tag tag-amber">底层</span></td><td>全部</td><td colspan="2" style="text-align:center;color:var(--text-secondary);">无改动</td><td>原设计满足需求</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 打印参数 -->
+  <div class="block">
+    <div class="block-title">打印参数 / Print Settings</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:1rem;text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);margin-bottom:0.4rem;">材料</div>
+        <div style="font-size:1rem;color:var(--primary);font-weight:600;">PLA</div>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:1rem;text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);margin-bottom:0.4rem;">层高</div>
+        <div style="font-size:1rem;color:var(--primary);font-weight:600;">0.2mm</div>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:1rem;text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);margin-bottom:0.4rem;">填充率</div>
+        <div style="font-size:1rem;color:var(--primary);font-weight:600;">15%</div>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:1rem;text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);margin-bottom:0.4rem;">支撑</div>
+        <div style="font-size:1rem;color:var(--primary);font-weight:600;">无</div>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:1rem;text-align:center;">
+        <div style="font-family:var(--font-mono);font-size:0.65rem;color:var(--text-secondary);margin-bottom:0.4rem;">打印件数</div>
+        <div style="font-size:1rem;color:var(--primary);font-weight:600;">3 件</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成果图库 -->
+  <div class="block">
+    <div class="block-title">成果展示 / Results（点击放大）</div>
+    <div class="img-grid">
+      <div class="img-item" onclick="openLightbox('../images/final/model-top.png')"><img src="images/modle-top.png" alt="顶盖建模"></div>
+      <div class="img-item" onclick="openLightbox('../images/final/model-body.png')"><img src="images/modle-body.jpg" alt="筒身建模"></div>
+      <div class="img-item" onclick="openLightbox('../images/final/model-bottom.png')"><img src="images/modle-bottom.png" alt="底座建模"></div>
+      <div class="img-item" onclick="openLightbox('../images/final/main.jpg')"><img src="images/main.jpg" alt="成品照"></div>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;padding-top:2rem;border-top:1px solid var(--border-gray);">
+    <a href="final-tech.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:0.8rem 1.5rem;color:var(--text-main);font-size:0.875rem;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-gray)'">← 技术栈</a>
+    <a href="final-reflection.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;background:var(--card-bg);border:1px solid var(--border-gray);border-radius:var(--radius);padding:0.8rem 1.5rem;color:var(--text-main);font-size:0.875rem;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border-gray)'">反思 →</a>
+  </div>
+</main>
+
+<script>
+document.querySelectorAll('.img-item img').forEach(img => {
+  img.parentElement.onclick = () => openLightbox(img.src);
+});
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('show');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+}
+</script>
+</body>
+</html>
